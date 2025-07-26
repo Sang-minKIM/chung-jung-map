@@ -1,0 +1,30 @@
+{
+  "printWidth": 120,
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^[@/]",
+    "^~/providers/(.*)$",
+    "^~/pages/(.*)$",
+    "^~/components/(.*)$",
+    "^~/hooks/(.*)$",
+    "^~/queries/(.*)$",
+    "^~/stores/(.*)$",
+    "^~/utils/(.*)$",
+    "^~/types/(.*)$",
+    "^~/(.*)$",
+    "^[./]",
+    "^[../]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

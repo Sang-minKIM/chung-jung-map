@@ -1,0 +1,5 @@
+public
+.swc
+.vscode
+*.d.ts
+node_modules
