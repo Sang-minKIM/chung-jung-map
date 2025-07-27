@@ -7,16 +7,9 @@ export interface FlexProps extends FlexContainerProps, BoxProps {
   children?: ReactNode
 }
 
-export const Flex = ({
-  display = 'flex',
-  direction = 'row',
-  align = 'stretch',
-  justify = 'start',
-  children,
-  ...rest
-}: FlexProps) => {
+export const Flex = ({ display = 'flex', children, ...rest }: FlexProps) => {
   return (
-    <StyledFlex direction={direction} align={align} justify={justify} {...rest}>
+    <StyledFlex display={display} {...rest}>
       {children}
     </StyledFlex>
   )

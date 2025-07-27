@@ -1,11 +1,27 @@
+import type { CSSProperties } from 'react'
 import { type Theme } from './theme'
-
-type StyleProps = { theme: Theme } & { [key: string]: any }
 
 type ThemeProps = { theme: Theme }
 
-export const space = (props: StyleProps) => {
-  const styles: { [key: string]: any } = {}
+export interface SpaceProps extends ThemeProps {
+  m?: keyof Theme['space'] | string
+  mx?: keyof Theme['space'] | string
+  my?: keyof Theme['space'] | string
+  mt?: keyof Theme['space'] | string
+  mr?: keyof Theme['space'] | string
+  mb?: keyof Theme['space'] | string
+  ml?: keyof Theme['space'] | string
+  p?: keyof Theme['space'] | string
+  px?: keyof Theme['space'] | string
+  py?: keyof Theme['space'] | string
+  pt?: keyof Theme['space'] | string
+  pr?: keyof Theme['space'] | string
+  pb?: keyof Theme['space'] | string
+  pl?: keyof Theme['space'] | string
+}
+
+export const space = (props: SpaceProps) => {
+  const styles: Partial<CSSProperties> = {}
   const { theme, m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl } = props
   const getSpace = (value: string | number) => theme.space[value as keyof typeof theme.space] || value
 
@@ -39,23 +55,43 @@ export const space = (props: StyleProps) => {
   return styles
 }
 
-export const layout = (props: StyleProps) => ({
+export interface LayoutProps extends ThemeProps {
+  width?: string | number
+  height?: string | number
+  minWidth?: string | number
+  maxWidth?: string | number
+  minHeight?: string | number
+  maxHeight?: string | number
+  overflow?: string
+}
+
+export const layout = (props: LayoutProps) => ({
   width: props.width,
   height: props.height,
   minWidth: props.minWidth,
   maxWidth: props.maxWidth,
   minHeight: props.minHeight,
   maxHeight: props.maxHeight,
-  display: props.display,
   overflow: props.overflow,
 })
 
-export const color = (props: StyleProps) => ({
+export interface ColorProps extends ThemeProps {
+  color?: keyof Theme['colors'] | string
+  bg?: keyof Theme['colors'] | string
+}
+
+export const color = (props: ColorProps) => ({
   color: props.theme.colors[props.color as keyof typeof props.theme.colors] || props.color,
   backgroundColor: props.theme.colors[props.bg as keyof typeof props.theme.colors] || props.bg,
 })
 
-export const typography = (props: StyleProps) => ({
+export interface TypographyProps extends ThemeProps {
+  fontSize?: keyof Theme['fontSizes'] | string
+  fontWeight?: keyof Theme['fontWeights'] | number
+  textAlign?: CSSProperties['textAlign']
+}
+
+export const typography = (props: TypographyProps) => ({
   fontSize: props.theme.fontSizes[props.fontSize as keyof typeof props.theme.fontSizes] || props.fontSize,
   fontWeight: props.theme.fontWeights[props.fontWeight as keyof typeof props.theme.fontWeights] || props.fontWeight,
   textAlign: props.textAlign,
