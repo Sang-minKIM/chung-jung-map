@@ -2,6 +2,8 @@ import { type Theme } from './theme'
 
 type StyleProps = { theme: Theme } & { [key: string]: any }
 
+type ThemeProps = { theme: Theme }
+
 export const space = (props: StyleProps) => {
   const styles: { [key: string]: any } = {}
   const { theme, m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl } = props
@@ -59,13 +61,95 @@ export const typography = (props: StyleProps) => ({
   textAlign: props.textAlign,
 })
 
-export const flexbox = (props: StyleProps) => ({
-  flexDirection: props.direction,
-  alignItems: props.align,
-  justifyContent: props.justify,
+const alignMap = {
+  start: 'flex-start',
+  end: 'flex-end',
+  center: 'center',
+  stretch: 'stretch',
+  baseline: 'baseline',
+}
+
+const justifyMap = {
+  start: 'flex-start',
+  end: 'flex-end',
+  center: 'center',
+  between: 'space-between',
+  around: 'space-around',
+  evenly: 'space-evenly',
+}
+
+export interface FlexContainerProps extends ThemeProps {
+  display?: 'flex' | 'inline-flex'
+  direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
+  align?: keyof typeof alignMap
+  justify?: keyof typeof justifyMap
+  wrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
+  gap?: keyof Theme['space'] | string
+}
+
+export const flexContainer = (props: FlexContainerProps) => {
+  return {
+    display: props.display,
+    flexDirection: props.direction,
+    alignItems: alignMap[props.align as keyof typeof alignMap] || props.align,
+    justifyContent: justifyMap[props.justify as keyof typeof justifyMap] || props.justify,
+    gap: props.theme.space[props.gap as keyof typeof props.theme.space] || props.gap,
+    flexWrap: props.wrap,
+  }
+}
+
+export interface GridContainerProps extends ThemeProps {
+  display?: 'grid' | 'inline-grid'
+  templateColumns?: string
+  templateRows?: string
+  gap?: keyof Theme['space'] | string
+  autoFlow?: 'row' | 'column' | 'dense' | 'row dense' | 'column dense'
+  align?: keyof typeof alignMap
+  justify?: keyof typeof justifyMap
+}
+
+export const gridContainer = (props: GridContainerProps) => ({
+  display: props.display,
+  gridTemplateColumns: props.templateColumns,
+  gridTemplateRows: props.templateRows,
   gap: props.theme.space[props.gap as keyof typeof props.theme.space] || props.gap,
-  flex: props.flex,
-  flexBasis: props.basis,
-  flexGrow: props.grow,
-  flexShrink: props.shrink,
+  gridAutoFlow: props.autoFlow,
+  alignItems: props.align,
+  justifyItems: props.justify,
 })
+
+export interface FlexItemProps extends ThemeProps {
+  flex?: string | number
+  flexBasis?: string | number
+  flexGrow?: number
+  flexShrink?: number
+  alignSelf?: keyof typeof alignMap
+}
+
+export const flexItem = (props: FlexItemProps) => {
+  return {
+    flex: props.flex,
+    flexBasis: props.flexBasis,
+    flexGrow: props.flexGrow,
+    flexShrink: props.flexShrink,
+    alignSelf: alignMap[props.alignSelf as keyof typeof alignMap] || props.alignSelf,
+  }
+}
+
+export interface GridItemProps extends ThemeProps {
+  gridArea?: string
+  gridColumn?: string
+  gridRow?: string
+  justifySelf?: keyof typeof justifyMap
+  alignSelf?: keyof typeof alignMap
+}
+
+export const gridItem = (props: GridItemProps) => {
+  return {
+    gridArea: props.gridArea,
+    gridColumn: props.gridColumn,
+    gridRow: props.gridRow,
+    justifySelf: justifyMap[props.justifySelf as keyof typeof justifyMap] || props.justifySelf,
+    alignSelf: alignMap[props.alignSelf as keyof typeof alignMap] || props.alignSelf,
+  }
+}
