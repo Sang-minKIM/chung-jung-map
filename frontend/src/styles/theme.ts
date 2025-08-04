@@ -11,7 +11,7 @@ export const theme = {
   fontSizes: {
     xs: '12px',
     sm: '14px',
-    base: '16px',
+    md: '16px',
     lg: '20px',
     xl: '24px',
     '2xl': '32px',
@@ -20,6 +20,7 @@ export const theme = {
     bold: 700,
     normal: 400,
   },
+
   space: {
     xs: '4px',
     sm: '8px',
@@ -28,6 +29,47 @@ export const theme = {
     xl: '24px',
     '2xl': '32px',
     '3xl': '48px',
+  },
+  componentSizes: {
+    sm: {
+      height: '32px',
+      padding: '4px 8px',
+      iconSize: '12px',
+    },
+    md: {
+      height: '40px',
+      padding: '8px 16px',
+      iconSize: '16px',
+    },
+    lg: {
+      height: '48px',
+      padding: '12px 24px',
+      iconSize: '20px',
+    },
+  },
+  animations: {
+    duration: {
+      fast: '0.1s',
+      normal: '0.2s',
+      slow: '0.3s',
+    },
+    easing: {
+      easeInOut: 'ease-in-out',
+      easeOut: 'ease-out',
+      easeIn: 'ease-in',
+    },
+  },
+  shadows: {
+    sm: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    md: '0 2px 8px rgba(0, 0, 0, 0.15)',
+    lg: '0 4px 16px rgba(0, 0, 0, 0.15)',
+    focus: '0 0 0 2px rgba(0, 184, 148, 0.3)',
+  },
+  radius: {
+    sm: '4px',
+    md: '8px',
+    lg: '12px',
+    full: '50%',
   },
 }
 
