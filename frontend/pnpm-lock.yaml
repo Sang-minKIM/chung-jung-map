@@ -29,6 +29,9 @@ dependencies:
   axios:
     specifier: ^1.11.0
     version: 1.11.0
+  lucide-react:
+    specifier: ^0.539.0
+    version: 0.539.0(react@19.1.0)
   react:
     specifier: ^19.1.0
     version: 19.1.0
@@ -2466,6 +2469,14 @@ packages:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
     dependencies:
       yallist: 3.1.1
+    dev: false
+
+  /lucide-react@0.539.0(react@19.1.0):
+    resolution: {integrity: sha512-VVISr+VF2krO91FeuCrm1rSOLACQUYVy7NQkzrOty52Y8TlTPcXcMdQFj9bYzBgXbWCiywlwSZ3Z8u6a+6bMlg==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    dependencies:
+      react: 19.1.0
     dev: false
 
   /math-intrinsics@1.1.0:
