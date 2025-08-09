@@ -1,7 +1,7 @@
 import { css, type Theme } from '@emotion/react'
 import React from 'react'
 import { type GridItemProps, type FlexItemProps } from '~/styles/style-props'
-import { Box, type BoxProps } from './box'
+import { Box, type BoxProps } from '../base/box'
 
 type CardVariant = 'basic' | 'surface' | 'accent'
 
