@@ -13,32 +13,23 @@ export interface CardProps extends Omit<FlexItemProps, 'theme'>, Omit<GridItemPr
 }
 
 export function Card({ as = 'div', variant = 'basic', className, ...rest }: CardProps) {
-  return (
-    <Box
-      as={as}
-      css={(theme: Theme) => [baseCardStyles(theme), variantStyles[variant](theme)]}
-      className={className}
-      {...rest}
-    />
-  )
+  return <Box as={as} css={(theme: Theme) => variantStyles[variant](theme)} className={className} {...rest} />
 }
-
-const baseCardStyles = (theme: Theme) => css`
-  border-radius: ${theme.radius.md};
-  padding: ${theme.space.xl};
-`
 
 const variantStyles = {
   basic: (theme: Theme) => css`
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.grey500};
+    border-radius: ${theme.radius.md};
   `,
   surface: (theme: Theme) => css`
     background-color: ${theme.colors.grey500};
     border: 1px solid ${theme.colors.grey500};
+    border-radius: ${theme.radius.md};
   `,
   accent: (theme: Theme) => css`
     background-color: ${theme.colors.white};
     border: 2px solid ${theme.colors.green};
+    border-radius: ${theme.radius.md};
   `,
 }
