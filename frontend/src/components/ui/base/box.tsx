@@ -98,5 +98,3 @@ export const Box = ({ as: Component = 'div', children, className, ...rest }: Box
     </Component>
   )
 }
-
-Box.displayName = 'Box'

@@ -27,6 +27,7 @@ export const theme = {
   },
 
   space: {
+    none: '0',
     xs: '4px',
     sm: '8px',
     md: '12px',
@@ -71,6 +72,7 @@ export const theme = {
     focus: '0 0 0 2px rgba(0, 184, 148, 0.3)',
   },
   radius: {
+    none: '0',
     sm: '4px',
     md: '8px',
     lg: '12px',
