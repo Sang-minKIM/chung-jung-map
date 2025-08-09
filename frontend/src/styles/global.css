@@ -2,12 +2,12 @@
 
 :root {
   /* 기본 팔레트 (라이트 모드) */
-  --green: #00B894;
-  --blue: #5DADE2;
+  --green: #00b894;
+  --blue: #5dade2;
   --white: #ffffff;
   --black: #333333;
   --grey-500: #888888;
-  --grey-100: #F7F9FC;
+  --grey-100: #f7f9fc;
   --grey-border: rgba(0, 0, 0, 0.1);
 
   /* 전역 변수 */
@@ -17,13 +17,18 @@
 
 .dark {
   /* 다크 모드 팔레트 */
-  --green: #00B894;
-  --blue: #5DADE2;
+  --green: #00b894;
+  --blue: #5dade2;
   --white: #1a1a1a;
   --black: #ffffff;
   --grey-500: #cccccc;
   --grey-100: #2a2a2a;
   --grey-border: rgba(255, 255, 255, 0.1);
+  --red: #ff6b6b;
+  --purple: #9b59b6;
+  --yellow: #f39c12;
+  --orange: #e67e22;
+  --navy: #2c3e50;
 }
 
 body {

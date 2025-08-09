@@ -7,6 +7,11 @@ export const theme = {
     grey100: 'var(--grey-100)',
     grey500: 'var(--grey-500)',
     border: 'var(--grey-border)',
+    red: 'var(--red)',
+    purple: 'var(--purple)',
+    yellow: 'var(--yellow)',
+    orange: 'var(--orange)',
+    navy: 'var(--navy)',
   },
   fontSizes: {
     xs: '12px',
