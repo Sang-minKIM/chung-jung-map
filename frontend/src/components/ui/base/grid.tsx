@@ -1,18 +1,42 @@
-import { Box, type BoxProps } from './box'
+import { css } from '@emotion/react'
 import type { ReactNode } from 'react'
-import styled from '@emotion/styled'
-import { gridContainer, type GridContainerProps } from '~/styles/style-props'
+import { useGridContainerStyles, type GridContainerProps } from '~/styles/style-props'
+import { Box, type BoxProps } from './box'
 
 export interface GridProps extends GridContainerProps, BoxProps {
   children?: ReactNode
 }
 
-export const Grid = ({ display = 'grid', children, ...rest }: GridProps) => {
+export const Grid = ({
+  display = 'grid',
+  children,
+  as = 'div',
+  templateColumns,
+  templateRows,
+  gap,
+  autoFlow,
+  align,
+  justify,
+  ...rest
+}: GridProps) => {
+  const gridContainerStyles = useGridContainerStyles({
+    ...rest,
+    display,
+    templateColumns,
+    templateRows,
+    gap,
+    autoFlow,
+    align,
+    justify,
+  })
+
+  const combinedStyles = {
+    ...gridContainerStyles,
+  }
+
   return (
-    <StyledGrid display={display} {...rest}>
+    <Box as={as} css={css(combinedStyles)} {...rest}>
       {children}
-    </StyledGrid>
+    </Box>
   )
 }
-
-const StyledGrid = styled(Box)<GridProps>(gridContainer)
