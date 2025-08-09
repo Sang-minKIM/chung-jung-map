@@ -6,9 +6,17 @@
   --blue: #5dade2;
   --white: #ffffff;
   --black: #333333;
-  --grey-500: #888888;
-  --grey-100: #f7f9fc;
-  --grey-border: rgba(0, 0, 0, 0.1);
+  --grey-50: #fafbfc;
+  --grey-100: #f7f9fc; /* 카드 배경, Surface */
+  --grey-200: rgba(0, 0, 0, 0.1); /* 테두리, Border */
+  --grey-300: #e5e7eb; /* 구분선 */
+  --grey-500: #888888; /* 보조 텍스트 */
+  --grey-600: #666666;
+  --red: #ff6b6b;
+  --purple: #9b59b6;
+  --yellow: #f39c12;
+  --orange: #e67e22;
+  --navy: #2c3e50;
 
   /* 전역 변수 */
   --font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
@@ -24,11 +32,6 @@
   --grey-500: #cccccc;
   --grey-100: #2a2a2a;
   --grey-border: rgba(255, 255, 255, 0.1);
-  --red: #ff6b6b;
-  --purple: #9b59b6;
-  --yellow: #f39c12;
-  --orange: #e67e22;
-  --navy: #2c3e50;
 }
 
 body {

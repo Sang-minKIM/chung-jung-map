@@ -1,6 +1,5 @@
 import React from 'react'
-import { css } from '@emotion/react'
-import type { Theme } from '~/styles/theme'
+import { css, type Theme } from '@emotion/react'
 import { Loader } from '../loader'
 
 type ButtonColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'

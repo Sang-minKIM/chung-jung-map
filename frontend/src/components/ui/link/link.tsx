@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link as TanstackLink, type LinkProps as TanstackLinkProps } from '@tanstack/react-router'
-import { css, useTheme } from '@emotion/react'
+import { css } from '@emotion/react'
 import { Text } from '../base/text'
 import type { Theme } from '~/styles/theme'
 
@@ -51,19 +51,11 @@ export interface LinkProps extends Omit<TanstackLinkProps, 'children'> {
  * - 모든 Tanstack Router Link의 기능을 그대로 지원
  */
 export function Link({ children, size = 'md', className, underline = false, ...linkProps }: LinkProps) {
-  const theme = useTheme() as Theme
   const { fontSize, fontWeight } = getLinkSizeStyles(size)
 
   return (
-    <TanstackLink css={linkStyles(theme, underline)} className={className} {...linkProps}>
-      <Text
-        as="span"
-        fontSize={fontSize}
-        fontWeight={fontWeight as 'normal' | 'bold'}
-        color="inherit"
-        theme={theme}
-        css={textStyles}
-      >
+    <TanstackLink css={(theme: Theme) => linkStyles(theme, underline)} className={className} {...linkProps}>
+      <Text as="span" fontSize={fontSize} fontWeight={fontWeight as 'normal' | 'bold'} color="inherit" css={textStyles}>
         {children}
       </Text>
     </TanstackLink>

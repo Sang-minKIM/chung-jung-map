@@ -5,8 +5,10 @@ export const theme = {
     white: 'var(--white)',
     black: 'var(--black)',
     grey100: 'var(--grey-100)',
+    grey200: 'var(--grey-200)',
+    grey300: 'var(--grey-300)',
     grey500: 'var(--grey-500)',
-    border: 'var(--grey-border)',
+    grey600: 'var(--grey-600)',
     red: 'var(--red)',
     purple: 'var(--purple)',
     yellow: 'var(--yellow)',
@@ -27,6 +29,7 @@ export const theme = {
   },
 
   space: {
+    none: '0',
     xs: '4px',
     sm: '8px',
     md: '12px',
@@ -71,6 +74,7 @@ export const theme = {
     focus: '0 0 0 2px rgba(0, 184, 148, 0.3)',
   },
   radius: {
+    none: '0',
     sm: '4px',
     md: '8px',
     lg: '12px',

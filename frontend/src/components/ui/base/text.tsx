@@ -6,9 +6,9 @@ export interface TextProps extends BoxProps {
   as?: 'p' | 'span'
 }
 
-export function Text({ as = 'p', fontSize = 'base', color = 'black', children, ...rest }: TextProps) {
+export function Text({ as = 'p', fontSize = 'md', color = 'black', m = 'none', children, ...rest }: TextProps) {
   return (
-    <Box as={as} fontSize={fontSize} color={color} {...rest}>
+    <Box as={as} fontSize={fontSize} color={color} m={m} {...rest}>
       {children}
     </Box>
   )

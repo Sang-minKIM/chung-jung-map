@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Box, type BoxProps } from './box'
 import type { ReactNode } from 'react'
 
@@ -16,14 +15,8 @@ export function Heading({
   ...rest
 }: HeadingProps) {
   return (
-    <StyledHeading as={as} {...rest}>
+    <Box as={as} fontSize={fontSize} fontWeight={fontWeight} color={color} {...rest}>
       {children}
-    </StyledHeading>
+    </Box>
   )
 }
-
-const StyledHeading = styled(Box)<HeadingProps>`
-  font-size: ${({ theme, fontSize }) => theme.fontSizes[fontSize as keyof typeof theme.fontSizes]};
-  font-weight: ${({ theme, fontWeight }) => theme.fontWeights[fontWeight as keyof typeof theme.fontWeights]};
-  color: ${({ theme, color }) => theme.colors[color as keyof typeof theme.colors]};
-`

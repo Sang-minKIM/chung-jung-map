@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react'
+import { useTheme } from '@emotion/react'
 import { type Theme } from './theme'
 
-type ThemeProps = { theme: Theme }
-
-export interface SpaceProps extends ThemeProps {
+// ThemeProps 제거하고 각 props 인터페이스를 수정
+export interface SpaceProps {
   m?: keyof Theme['space']
   mx?: keyof Theme['space']
   my?: keyof Theme['space']
@@ -20,9 +20,10 @@ export interface SpaceProps extends ThemeProps {
   pl?: keyof Theme['space']
 }
 
-export const space = (props: SpaceProps) => {
-  const styles: Partial<CSSProperties> = {}
-  const { theme, m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl } = props
+export const useSpaceStyles = (props: SpaceProps) => {
+  const theme = useTheme()
+  const styles: CSSProperties = {}
+  const { m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl } = props
   const getSpace = (value: string | number) => theme.space[value as keyof typeof theme.space] || value
 
   if (m !== undefined) styles.margin = getSpace(m)
@@ -55,7 +56,7 @@ export const space = (props: SpaceProps) => {
   return styles
 }
 
-export interface LayoutProps extends ThemeProps {
+export interface LayoutProps {
   width?: string | number
   height?: string | number
   minWidth?: string | number
@@ -65,7 +66,7 @@ export interface LayoutProps extends ThemeProps {
   overflow?: string
 }
 
-export const layout = (props: LayoutProps) => ({
+export const useLayoutStyles = (props: LayoutProps) => ({
   width: props.width,
   height: props.height,
   minWidth: props.minWidth,
@@ -75,27 +76,33 @@ export const layout = (props: LayoutProps) => ({
   overflow: props.overflow,
 })
 
-export interface ColorProps extends ThemeProps {
+export interface ColorProps {
   color?: keyof Theme['colors'] | string
-  bg?: keyof Theme['colors'] | string
+  backgroundColor?: keyof Theme['colors'] | string
 }
 
-export const color = (props: ColorProps) => ({
-  color: props.theme.colors[props.color as keyof typeof props.theme.colors] || props.color,
-  backgroundColor: props.theme.colors[props.bg as keyof typeof props.theme.colors] || props.bg,
-})
+export const useColorStyles = (props: ColorProps) => {
+  const theme = useTheme() as Theme
+  return {
+    color: theme.colors[props.color as keyof typeof theme.colors] || props.color,
+    backgroundColor: theme.colors[props.backgroundColor as keyof typeof theme.colors] || props.backgroundColor,
+  }
+}
 
-export interface TypographyProps extends ThemeProps {
+export interface TypographyProps {
   fontSize?: keyof Theme['fontSizes'] | string
   fontWeight?: keyof Theme['fontWeights'] | number
   textAlign?: CSSProperties['textAlign']
 }
 
-export const typography = (props: TypographyProps) => ({
-  fontSize: props.theme.fontSizes[props.fontSize as keyof typeof props.theme.fontSizes] || props.fontSize,
-  fontWeight: props.theme.fontWeights[props.fontWeight as keyof typeof props.theme.fontWeights] || props.fontWeight,
-  textAlign: props.textAlign,
-})
+export const useTypographyStyles = (props: TypographyProps) => {
+  const theme = useTheme() as Theme
+  return {
+    fontSize: theme.fontSizes[props.fontSize as keyof typeof theme.fontSizes] || props.fontSize,
+    fontWeight: theme.fontWeights[props.fontWeight as keyof typeof theme.fontWeights] || props.fontWeight,
+    textAlign: props.textAlign,
+  }
+}
 
 const alignMap = {
   start: 'flex-start',
@@ -114,7 +121,7 @@ const justifyMap = {
   evenly: 'space-evenly',
 }
 
-export interface FlexContainerProps extends ThemeProps {
+export interface FlexContainerProps {
   display?: 'flex' | 'inline-flex'
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
   align?: keyof typeof alignMap
@@ -123,38 +130,42 @@ export interface FlexContainerProps extends ThemeProps {
   gap?: keyof Theme['space']
 }
 
-export const flexContainer = (props: FlexContainerProps) => {
+export const useFlexContainerStyles = (props: FlexContainerProps) => {
+  const theme = useTheme() as Theme
   return {
     display: props.display,
     flexDirection: props.direction,
     alignItems: alignMap[props.align as keyof typeof alignMap] || props.align,
     justifyContent: justifyMap[props.justify as keyof typeof justifyMap] || props.justify,
-    gap: props.theme.space[props.gap as keyof typeof props.theme.space] || props.gap,
+    gap: theme.space[props.gap as keyof typeof theme.space] || props.gap,
     flexWrap: props.wrap,
   }
 }
 
-export interface GridContainerProps extends ThemeProps {
+export interface GridContainerProps {
   display?: 'grid' | 'inline-grid'
   templateColumns?: string
   templateRows?: string
-  gap?: keyof Theme['space'] | string
+  gap?: keyof Theme['space']
   autoFlow?: 'row' | 'column' | 'dense' | 'row dense' | 'column dense'
   align?: keyof typeof alignMap
   justify?: keyof typeof justifyMap
 }
 
-export const gridContainer = (props: GridContainerProps) => ({
-  display: props.display,
-  gridTemplateColumns: props.templateColumns,
-  gridTemplateRows: props.templateRows,
-  gap: props.theme.space[props.gap as keyof typeof props.theme.space] || props.gap,
-  gridAutoFlow: props.autoFlow,
-  alignItems: props.align,
-  justifyItems: props.justify,
-})
+export const useGridContainerStyles = (props: GridContainerProps) => {
+  const theme = useTheme() as Theme
+  return {
+    display: props.display,
+    gridTemplateColumns: props.templateColumns,
+    gridTemplateRows: props.templateRows,
+    gap: theme.space[props.gap as keyof typeof theme.space] || props.gap,
+    gridAutoFlow: props.autoFlow,
+    alignItems: props.align,
+    justifyItems: props.justify,
+  }
+}
 
-export interface FlexItemProps extends ThemeProps {
+export interface FlexItemProps {
   flex?: string | number
   flexBasis?: string | number
   flexGrow?: number
@@ -162,7 +173,7 @@ export interface FlexItemProps extends ThemeProps {
   alignSelf?: keyof typeof alignMap
 }
 
-export const flexItem = (props: FlexItemProps) => {
+export const useFlexItemStyles = (props: FlexItemProps) => {
   return {
     flex: props.flex,
     flexBasis: props.flexBasis,
@@ -172,7 +183,7 @@ export const flexItem = (props: FlexItemProps) => {
   }
 }
 
-export interface GridItemProps extends ThemeProps {
+export interface GridItemProps {
   gridArea?: string
   gridColumn?: string
   gridRow?: string
@@ -180,7 +191,7 @@ export interface GridItemProps extends ThemeProps {
   alignSelf?: keyof typeof alignMap
 }
 
-export const gridItem = (props: GridItemProps) => {
+export const useGridItemStyles = (props: GridItemProps) => {
   return {
     gridArea: props.gridArea,
     gridColumn: props.gridColumn,
