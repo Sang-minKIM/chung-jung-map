@@ -19,12 +19,12 @@ export function Card({ as = 'div', variant = 'basic', className, ...rest }: Card
 const variantStyles = {
   basic: (theme: Theme) => css`
     background-color: ${theme.colors.white};
-    border: 1px solid ${theme.colors.grey500};
+    border: 1px solid ${theme.colors.grey200};
     border-radius: ${theme.radius.md};
   `,
   surface: (theme: Theme) => css`
-    background-color: ${theme.colors.grey500};
-    border: 1px solid ${theme.colors.grey500};
+    background-color: ${theme.colors.grey100};
+    border: 1px solid ${theme.colors.grey100};
     border-radius: ${theme.radius.md};
   `,
   accent: (theme: Theme) => css`
