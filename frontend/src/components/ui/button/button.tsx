@@ -3,8 +3,11 @@ import { css } from '@emotion/react'
 import type { Theme } from '~/styles/theme'
 import { Loader } from '../loader'
 
+type ButtonColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'accent'
+  variant?: 'primary' | 'outline'
+  color?: ButtonColor
   size?: 'sm' | 'md' | 'lg'
   loading?: boolean
 }
@@ -12,6 +15,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export function Button({
   className,
   variant = 'primary',
+  color = 'green',
   size = 'md',
   loading = false,
   disabled,
@@ -22,7 +26,7 @@ export function Button({
     <button
       css={(theme: Theme) => [
         baseButtonStyles(theme),
-        variantStyles[variant](theme),
+        variantStyles[variant](theme, color),
         sizeStyles[size](theme),
         loading && loadingStyles,
       ]}
@@ -68,40 +72,31 @@ const baseButtonStyles = (theme: Theme) => css`
 `
 
 const variantStyles = {
-  primary: (theme: Theme) => css`
-    background-color: ${theme.colors.green};
+  primary: (theme: Theme, color: ButtonColor) => css`
+    background-color: ${theme.colors[color]};
     color: ${theme.colors.white};
-    border-color: ${theme.colors.green};
-    box-shadow: 0 2px 8px rgba(0, 184, 148, 0.24);
+    border-color: ${theme.colors[color]};
+    box-shadow: ${theme.shadows.sm};
 
     &:hover:not(:disabled) {
-      background-color: #00a082;
-      border-color: #00a082;
-      box-shadow: 0 4px 16px rgba(0, 184, 148, 0.32);
+      background-color: ${theme.colors[color]};
+      border-color: ${theme.colors[color]};
+      opacity: 0.9;
+      box-shadow: ${theme.shadows.md};
     }
   `,
-  secondary: (theme: Theme) => css`
+  outline: (theme: Theme, color: ButtonColor) => css`
     background-color: ${theme.colors.white};
     color: ${theme.colors.black};
-    border-color: ${theme.colors.border};
+    border-color: ${theme.colors[color]};
     box-shadow: ${theme.shadows.sm};
 
     &:hover:not(:disabled) {
       background-color: ${theme.colors.grey100};
-      border-color: ${theme.colors.green};
+      border-color: ${theme.colors[color]};
+      color: ${theme.colors[color]};
+      opacity: 0.9;
       box-shadow: ${theme.shadows.md};
-    }
-  `,
-  accent: (theme: Theme) => css`
-    background-color: ${theme.colors.blue};
-    color: ${theme.colors.white};
-    border-color: ${theme.colors.blue};
-    box-shadow: 0 2px 8px rgba(93, 173, 226, 0.24);
-
-    &:hover:not(:disabled) {
-      background-color: #4a9fd9;
-      border-color: #4a9fd9;
-      box-shadow: 0 4px 16px rgba(93, 173, 226, 0.32);
     }
   `,
 }
