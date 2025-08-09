@@ -13,6 +13,11 @@ interface DotProps {
   size: keyof typeof sizes
 }
 
+/**
+ * dot 컴포넌트
+ * @param color 색상 `'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'`
+ * @param size 점의 크기 `'sm' | 'md' | 'lg'`
+ */
 export const Dot = styled.div<DotProps>`
   width: ${({ size }) => sizes[size ?? 'sm']};
   height: ${({ size }) => sizes[size ?? 'sm']};
