@@ -21,6 +21,22 @@ export interface BoxProps extends SpaceProps, LayoutProps, ColorProps, Typograph
   className?: string
 }
 
+/**
+ * Box 컴포넌트
+ *
+ * 아래 속성을 사용하여 스타일을 설정할 수 있습니다.
+ * @space m, mx, my, mt, mr, mb, ml, p, px, py, pt, pr, pb, pl
+ * @layout width, height, minWidth, minHeight, maxWidth, maxHeight, overflow
+ * @color color, backgroundColor
+ * @typography fontSize, fontWeight, textAlign
+ * @flexItem flex, flexBasis, flexGrow, flexShrink, alignSelf
+ * @gridItem gridArea, gridColumn, gridRow, justifySelf
+ *
+ * @param as
+ * @param children
+ * @param className
+ *
+ */
 export const Box = ({ as: Component = 'div', children, className, ...rest }: BoxProps) => {
   const {
     m,
