@@ -1,7 +1,7 @@
 import { Box, type BoxProps } from './box'
 import type { ReactNode } from 'react'
 
-interface HeadingProps extends BoxProps {
+export interface HeadingProps extends BoxProps {
   children: ReactNode
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
