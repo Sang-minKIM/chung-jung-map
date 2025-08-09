@@ -1,17 +1,42 @@
 import { css, type Theme } from '@emotion/react'
 import React from 'react'
 import { type GridItemProps, type FlexItemProps } from '~/styles/style-props'
-import { Box } from './box'
+import { Box, type BoxProps } from './box'
 
 type CardVariant = 'basic' | 'surface' | 'accent'
 
-export interface CardProps extends Omit<FlexItemProps, 'theme'>, Omit<GridItemProps, 'theme'> {
+export interface CardProps extends FlexItemProps, GridItemProps, BoxProps {
   as?: React.ElementType
   variant?: CardVariant
   className?: string
   children?: React.ReactNode
 }
 
+/**
+ * 카드 컴포넌트
+ *
+ * 아래 속성을 사용하여 카드를 사용할 수 있습니다.
+ *
+ * @param variant basic, surface, accent
+ *
+ * @example
+ * ```tsx
+ * 기본 테두리
+ * <Card variant="basic">
+ *   <Text>Hello</Text>
+ * </Card>
+ *
+ * 옅은 배경 색, 테두리 없음
+ * <Card variant="surface">
+ *   <Text>Hello</Text>
+ * </Card>
+ *
+ * 테두리 강조
+ * <Card variant="accent">
+ *   <Text>Hello</Text>
+ * </Card>
+ * ```
+ */
 export function Card({ as = 'div', variant = 'basic', className, ...rest }: CardProps) {
   return <Box as={as} css={(theme: Theme) => variantStyles[variant](theme)} className={className} {...rest} />
 }
