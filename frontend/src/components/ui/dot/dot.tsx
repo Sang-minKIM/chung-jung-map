@@ -17,6 +17,13 @@ interface DotProps {
  * dot 컴포넌트
  * @param color 색상 `'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'`
  * @param size 점의 크기 `'sm' | 'md' | 'lg'`
+ *
+ * @example
+ * ```tsx
+ * <Dot color="red" size="sm" />
+ * <Dot color="green" size="md" />
+ * <Dot color="blue" size="lg" />
+ * ```
  */
 export const Dot = styled.div<DotProps>`
   width: ${({ size }) => sizes[size ?? 'sm']};
