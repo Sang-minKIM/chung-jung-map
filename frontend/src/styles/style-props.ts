@@ -4,20 +4,20 @@ import { type Theme } from './theme'
 type ThemeProps = { theme: Theme }
 
 export interface SpaceProps extends ThemeProps {
-  m?: keyof Theme['space'] | string
-  mx?: keyof Theme['space'] | string
-  my?: keyof Theme['space'] | string
-  mt?: keyof Theme['space'] | string
-  mr?: keyof Theme['space'] | string
-  mb?: keyof Theme['space'] | string
-  ml?: keyof Theme['space'] | string
-  p?: keyof Theme['space'] | string
-  px?: keyof Theme['space'] | string
-  py?: keyof Theme['space'] | string
-  pt?: keyof Theme['space'] | string
-  pr?: keyof Theme['space'] | string
-  pb?: keyof Theme['space'] | string
-  pl?: keyof Theme['space'] | string
+  m?: keyof Theme['space']
+  mx?: keyof Theme['space']
+  my?: keyof Theme['space']
+  mt?: keyof Theme['space']
+  mr?: keyof Theme['space']
+  mb?: keyof Theme['space']
+  ml?: keyof Theme['space']
+  p?: keyof Theme['space']
+  px?: keyof Theme['space']
+  py?: keyof Theme['space']
+  pt?: keyof Theme['space']
+  pr?: keyof Theme['space']
+  pb?: keyof Theme['space']
+  pl?: keyof Theme['space']
 }
 
 export const space = (props: SpaceProps) => {
@@ -120,7 +120,7 @@ export interface FlexContainerProps extends ThemeProps {
   align?: keyof typeof alignMap
   justify?: keyof typeof justifyMap
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
-  gap?: keyof Theme['space'] | string
+  gap?: keyof Theme['space']
 }
 
 export const flexContainer = (props: FlexContainerProps) => {

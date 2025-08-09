@@ -1,18 +1,38 @@
-import { Box, type BoxProps } from './box'
+import { css, useTheme } from '@emotion/react'
 import type { ReactNode } from 'react'
-import styled from '@emotion/styled'
-import { flexContainer, type FlexContainerProps } from '~/styles/style-props'
+import {
+  flexContainer,
+  space,
+  layout,
+  color,
+  typography,
+  flexItem,
+  gridItem,
+  type FlexContainerProps,
+} from '~/styles/style-props'
+import type { BoxProps } from './box'
 
-export interface FlexProps extends FlexContainerProps, BoxProps {
+export interface FlexProps extends Omit<FlexContainerProps, 'theme'>, Omit<BoxProps, 'theme'> {
   children?: ReactNode
 }
 
-export const Flex = ({ display = 'flex', children, ...rest }: FlexProps) => {
+export function Flex({ display = 'flex', children, as: Component = 'div', ...rest }: FlexProps) {
+  const theme = useTheme()
+  const propsWithTheme = { ...rest, display, theme }
+
   return (
-    <StyledFlex display={display} {...rest}>
+    <Component
+      css={css`
+        ${flexContainer(propsWithTheme)}
+        ${space(propsWithTheme)}
+        ${layout(propsWithTheme)}
+        ${color(propsWithTheme)}
+        ${typography(propsWithTheme)}
+        ${flexItem(propsWithTheme)}
+        ${gridItem(propsWithTheme)}
+      `}
+    >
       {children}
-    </StyledFlex>
+    </Component>
   )
 }
-
-const StyledFlex = styled(Box)<FlexProps>(flexContainer)
