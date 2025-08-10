@@ -82,4 +82,4 @@ export const theme = {
   },
 }
 
-export type Theme = typeof theme
+export type MyTheme = typeof theme

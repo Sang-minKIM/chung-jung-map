@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import type { ReactNode } from 'react'
 import { useFlexContainerStyles, type FlexContainerProps } from '~/styles/style-props'
-import { Box, type BoxProps } from './box'
+import { Box, type BoxProps } from '~/components/layout/box'
 
 export interface FlexProps extends FlexContainerProps, BoxProps {
   children?: ReactNode

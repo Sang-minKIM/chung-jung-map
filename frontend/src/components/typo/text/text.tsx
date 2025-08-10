@@ -1,4 +1,4 @@
-import { Box, type BoxProps } from './box'
+import { Box, type BoxProps } from '~/components/layout/box'
 import type { ReactNode } from 'react'
 
 export interface TextProps extends BoxProps {
