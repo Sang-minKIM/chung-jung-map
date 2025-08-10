@@ -9,6 +9,7 @@ import { Flex } from '~/components/layout/flex'
 import { Heading } from '~/components/typo/heading'
 import { Text } from '~/components/typo/text'
 import { Button } from '../button'
+import { Box } from '~/components/layout/box'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,43 +17,45 @@ export function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <Container css={headerContainerStyles}>
-      <Flex as="header" justify="between" align="center" height="64px">
-        <Link to="/" css={linkStyles}>
-          <LogoWrapper>
-            <MapPin color="white" size="20" />
-          </LogoWrapper>
-          <Flex direction="column" gap="2xs">
-            <Heading as="h1" fontSize="lg" fontWeight="bold">
-              청정맵
-            </Heading>
-            <Text fontSize="xs" fontWeight="regular" color="grey500">
-              청년 정보 맵
-            </Text>
-          </Flex>
-        </Link>
+    <Box as="header" css={headerContainerStyles}>
+      <Container>
+        <Flex justify="between" align="center" height="64px">
+          <Link to="/" css={linkStyles}>
+            <LogoWrapper>
+              <MapPin color="white" size="20" />
+            </LogoWrapper>
+            <Flex direction="column" gap="2xs">
+              <Heading as="h1" fontSize="lg" fontWeight="bold">
+                청정맵
+              </Heading>
+              <Text fontSize="xs" fontWeight="regular" color="grey500">
+                청년 정보 맵
+              </Text>
+            </Flex>
+          </Link>
 
-        <DesktopNav>
+          <DesktopNav>
+            {navItems.map((item) => (
+              <Link key={item.to} to={item.to}>
+                {item.name}
+              </Link>
+            ))}
+          </DesktopNav>
+
+          <Button variant="ghost" css={mobileMenuButtonStyles} onClick={toggleMenu}>
+            {isMenuOpen ? <X size="24" /> : <Menu size="24" />}
+          </Button>
+        </Flex>
+
+        <MobileNav isOpen={isMenuOpen}>
           {navItems.map((item) => (
-            <Link key={item.to} to={item.to}>
+            <Link key={item.to} to={item.to} onClick={() => setIsMenuOpen(false)}>
               {item.name}
             </Link>
           ))}
-        </DesktopNav>
-
-        <Button variant="ghost" css={mobileMenuButtonStyles} onClick={toggleMenu}>
-          {isMenuOpen ? <X size="24" /> : <Menu size="24" />}
-        </Button>
-      </Flex>
-
-      <MobileNav isOpen={isMenuOpen}>
-        {navItems.map((item) => (
-          <Link key={item.to} to={item.to} onClick={() => setIsMenuOpen(false)}>
-            {item.name}
-          </Link>
-        ))}
-      </MobileNav>
-    </Container>
+        </MobileNav>
+      </Container>
+    </Box>
   )
 }
 
@@ -111,6 +114,7 @@ const linkStyles = (theme: Theme) => css`
 `
 
 const headerContainerStyles = (theme: Theme) => css`
+  width: 100%;
   border-bottom: 1px solid ${theme.colors.grey200};
   position: sticky;
   top: 0;
