@@ -63,6 +63,7 @@ const baseButtonStyles = (theme: Theme) => css`
 
   &:active:not(:disabled) {
     transform: scale(0.98);
+    outline: none;
   }
 
   &:hover:not(:disabled) {
@@ -98,15 +99,23 @@ const variantStyles = {
       box-shadow: ${theme.shadows.md};
     }
   `,
-  ghost: (theme: Theme) => css`
+  ghost: (theme: Theme, color: ButtonColor) => css`
     background-color: transparent;
     color: ${theme.colors.black};
     border-color: transparent;
+    outline: none;
     box-shadow: none;
     padding: 0;
 
     &:hover:not(:disabled) {
-      opacity: 0.9;
+      color: ${theme.colors[color]};
+      background-color: transparent;
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    &:focus {
+      outline: none;
       box-shadow: none;
     }
   `,
