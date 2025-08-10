@@ -25,11 +25,15 @@ export const theme = {
   },
   fontWeights: {
     bold: 700,
-    normal: 400,
+    semibold: 600,
+    medium: 500,
+    regular: 400,
+    thin: 300,
   },
 
   space: {
     none: '0',
+    '2xs': '2px',
     xs: '4px',
     sm: '8px',
     md: '12px',

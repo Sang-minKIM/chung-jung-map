@@ -5,7 +5,7 @@ import { Loader } from '../loader'
 type ButtonColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'outline'
+  variant?: 'primary' | 'outline' | 'ghost'
   color?: ButtonColor
   size?: 'sm' | 'md' | 'lg'
   loading?: boolean
@@ -25,8 +25,8 @@ export function Button({
     <button
       css={(theme: Theme) => [
         baseButtonStyles(theme),
-        variantStyles[variant](theme, color),
         sizeStyles[size](theme),
+        variantStyles[variant](theme, color),
         loading && loadingStyles,
       ]}
       disabled={disabled || loading}
@@ -44,11 +44,11 @@ const baseButtonStyles = (theme: Theme) => css`
   align-items: center;
   justify-content: center;
   border-radius: ${theme.radius.md};
-  font-weight: ${theme.fontWeights.normal};
+  font-weight: ${theme.fontWeights.regular};
   transition: all ${theme.animations.duration.normal} ${theme.animations.easing.easeInOut};
   cursor: pointer;
   border: 1px solid;
-  line-height: 1.5;
+  line-height: 1;
 
   &:focus {
     outline: none;
@@ -63,6 +63,7 @@ const baseButtonStyles = (theme: Theme) => css`
 
   &:active:not(:disabled) {
     transform: scale(0.98);
+    outline: none;
   }
 
   &:hover:not(:disabled) {
@@ -96,6 +97,26 @@ const variantStyles = {
       color: ${theme.colors[color]};
       opacity: 0.9;
       box-shadow: ${theme.shadows.md};
+    }
+  `,
+  ghost: (theme: Theme, color: ButtonColor) => css`
+    background-color: transparent;
+    color: ${theme.colors.black};
+    border-color: transparent;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+
+    &:hover:not(:disabled) {
+      color: ${theme.colors[color]};
+      background-color: transparent;
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
     }
   `,
 }

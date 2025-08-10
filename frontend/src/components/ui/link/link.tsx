@@ -8,6 +8,7 @@ export interface LinkProps extends Omit<TanstackLinkProps, 'children'> {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   className?: string
   underline?: boolean
+  onClick?: () => void
 }
 
 /**
@@ -49,12 +50,19 @@ export interface LinkProps extends Omit<TanstackLinkProps, 'children'> {
  * - 포커스 시 접근성을 위한 focus ring 표시
  * - 모든 Tanstack Router Link의 기능을 그대로 지원
  */
-export function Link({ children, size = 'md', className, underline = false, ...linkProps }: LinkProps) {
+export function Link({ children, size = 'md', className, underline = false, onClick, ...linkProps }: LinkProps) {
   const { fontSize, fontWeight } = getLinkSizeStyles(size)
 
   return (
-    <TanstackLink css={(theme: Theme) => linkStyles(theme, underline)} className={className} {...linkProps}>
-      <Text as="span" fontSize={fontSize} fontWeight={fontWeight as 'normal' | 'bold'} color="inherit" css={textStyles}>
+    <TanstackLink css={(theme: Theme) => linkStyles(theme, underline)} onClick={onClick} {...linkProps}>
+      <Text
+        as="span"
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        color="inherit"
+        css={textStyles}
+        className={className}
+      >
         {children}
       </Text>
     </TanstackLink>
@@ -63,10 +71,10 @@ export function Link({ children, size = 'md', className, underline = false, ...l
 
 const getLinkSizeStyles = (size: string) => {
   const sizeMap = {
-    xs: { fontSize: 'xs', fontWeight: 'normal' as const },
-    sm: { fontSize: 'sm', fontWeight: 'normal' as const },
-    md: { fontSize: 'base', fontWeight: 'normal' as const },
-    lg: { fontSize: 'lg', fontWeight: 'normal' as const },
+    xs: { fontSize: 'xs', fontWeight: 'regular' as const },
+    sm: { fontSize: 'sm', fontWeight: 'regular' as const },
+    md: { fontSize: 'base', fontWeight: 'regular' as const },
+    lg: { fontSize: 'lg', fontWeight: 'regular' as const },
     xl: { fontSize: 'xl', fontWeight: 'bold' as const },
   }
 
