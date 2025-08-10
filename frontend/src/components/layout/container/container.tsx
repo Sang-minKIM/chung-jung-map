@@ -11,6 +11,7 @@ export function Container({ children, ...rest }: BoxProps) {
 
 const containerStyles = (theme: Theme) => css`
   max-width: 1280px;
+  height: 100%;
   margin: 0 auto;
   padding: 0 ${theme.space.lg};
 
