@@ -7,7 +7,6 @@ import { tanstackRouter } from '@tanstack/router-vite-plugin'
 export default defineConfig({
   plugins: [
     tanstackRouter({
-      routesDirectory: './src/pages',
       generatedRouteTree: './src/routeTree.gen.ts',
       target: 'react',
       autoCodeSplitting: true,

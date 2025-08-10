@@ -12,7 +12,7 @@
     "paths": {
       "~/*": ["src/*"],
       "~/providers/*": ["src/providers/*"],
-      "~/pages/*": ["src/pages/*"],
+      "~/routes/*": ["src/routes/*"],
       "~/components/*": ["src/components/*"],
       "~/hooks/*": ["src/hooks/*"],
       "~/queries/*": ["src/queries/*"],
