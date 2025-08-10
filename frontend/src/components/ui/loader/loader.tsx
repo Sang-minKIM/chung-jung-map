@@ -1,5 +1,4 @@
-import { css, keyframes } from '@emotion/react'
-import type { Theme } from '~/styles/theme'
+import { css, keyframes, type Theme } from '@emotion/react'
 
 export interface LoaderProps {
   size?: 'sm' | 'md' | 'lg'

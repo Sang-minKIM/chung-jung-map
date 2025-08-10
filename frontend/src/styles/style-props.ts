@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react'
-import { useTheme } from '@emotion/react'
-import { type Theme } from './theme'
+import { useTheme, type Theme } from '@emotion/react'
 
 // ThemeProps 제거하고 각 props 인터페이스를 수정
 export interface SpaceProps {

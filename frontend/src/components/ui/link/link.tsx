@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link as TanstackLink, type LinkProps as TanstackLinkProps } from '@tanstack/react-router'
-import { css } from '@emotion/react'
-import { Text } from '../base/text'
-import type { Theme } from '~/styles/theme'
+import { css, type Theme } from '@emotion/react'
+import { Text } from '~/components/typo/text'
 
 export interface LinkProps extends Omit<TanstackLinkProps, 'children'> {
   children: React.ReactNode

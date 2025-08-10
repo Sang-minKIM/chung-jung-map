@@ -1,5 +1,0 @@
-export { Box, type BoxProps } from './box'
-export { Flex, type FlexProps } from './flex'
-export { Grid, type GridProps } from './grid'
-export { Text, type TextProps } from './text'
-export { Heading, type HeadingProps } from './heading'

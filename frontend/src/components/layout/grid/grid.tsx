@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import type { ReactNode } from 'react'
 import { useGridContainerStyles, type GridContainerProps } from '~/styles/style-props'
-import { Box, type BoxProps } from './box'
+import { Box, type BoxProps } from '~/components/layout/box'
 
 export interface GridProps extends GridContainerProps, BoxProps {
   children?: ReactNode
