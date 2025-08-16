@@ -88,7 +88,7 @@ const variantStyles = {
   outline: (theme: Theme, color: ButtonColor) => css`
     background-color: ${theme.colors.white};
     color: ${theme.colors.black};
-    border-color: ${theme.colors[color]};
+    border-color: ${theme.colors.grey200};
     box-shadow: ${theme.shadows.sm};
 
     &:hover:not(:disabled) {
