@@ -33,7 +33,7 @@ export function PolicyCategoryFilter() {
         </Text>
       </SegmentedControl.Item>
       {POLICY_CATEGORY_OPTIONS.map(({ label, value, color }) => (
-        <SegmentedControl.Item value={value} color={color}>
+        <SegmentedControl.Item key={value} value={value} color={color}>
           <Flex gap="xs" align="center">
             <Dot color={search.category === value ? 'white' : color} size="sm" />
             <Text fontSize="sm" fontWeight="semibold" color="inherit">
