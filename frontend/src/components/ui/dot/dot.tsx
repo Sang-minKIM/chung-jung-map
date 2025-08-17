@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { type Theme } from '@emotion/react'
 
 const sizes = {
   sm: '8px',
@@ -6,10 +7,8 @@ const sizes = {
   lg: '16px',
 } as const
 
-type DotColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'
-
 interface DotProps {
-  color: DotColor
+  color: keyof Theme['colors']
   size: keyof typeof sizes
 }
 

@@ -50,12 +50,12 @@ export const theme = {
     },
     md: {
       height: '40px',
-      padding: '8px 16px',
+      padding: '6px 12px',
       iconSize: '16px',
     },
     lg: {
       height: '48px',
-      padding: '12px 24px',
+      padding: '8px 16px',
       iconSize: '20px',
     },
   },

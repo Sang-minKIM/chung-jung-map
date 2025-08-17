@@ -1,8 +1,10 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { getPoliciesQueryOptions } from '~/queries/policies/policies.query'
 import { PoliciesSearchSchema } from '~/queries/policies/policies.type'
 import { queryClient } from '~/queries/query-client'
+import { PolicySearchSection } from './-components/search/policy-search-section'
+import { PolicyResultsSection } from './-components/list'
+import { Suspense } from 'react'
 
 export const Route = createFileRoute('/policies/')({
   validateSearch: PoliciesSearchSchema,
@@ -12,19 +14,12 @@ export const Route = createFileRoute('/policies/')({
 })
 
 function Policies() {
-  const search = Route.useSearch()
-
-  const {
-    data: { data: policies },
-  } = useSuspenseQuery(getPoliciesQueryOptions(search))
-
-  console.log(policies)
-
   return (
-    <div>
-      {policies?.map((policy) => (
-        <div key={policy.id}>{policy.title}</div>
-      ))}
-    </div>
+    <>
+      <PolicySearchSection />
+      <Suspense fallback={<div>Loading...</div>}>
+        <PolicyResultsSection />
+      </Suspense>
+    </>
   )
 }

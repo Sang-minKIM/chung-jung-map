@@ -165,10 +165,10 @@ export const useGridContainerStyles = (props: GridContainerProps) => {
 }
 
 export interface FlexItemProps {
-  flex?: string | number
-  flexBasis?: string | number
-  flexGrow?: number
-  flexShrink?: number
+  flex?: string
+  flexBasis?: string
+  flexGrow?: string
+  flexShrink?: string
   alignSelf?: keyof typeof alignMap
 }
 

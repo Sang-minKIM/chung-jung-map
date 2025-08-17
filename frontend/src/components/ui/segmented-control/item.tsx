@@ -4,15 +4,22 @@ import { useSegmentedControlContext } from './context'
 
 type SegmentedColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple'
 
-export interface SegmentedItemProps extends Omit<ButtonProps, 'color' | 'variant'> {
-  value: string
+export interface SegmentedItemProps<T extends string> extends Omit<ButtonProps, 'color' | 'variant'> {
+  value: T
   color?: SegmentedColor
   disabled?: boolean
   children?: React.ReactNode
 }
 
-export function Item({ value, color = 'green', disabled, children, onClick, ...rest }: SegmentedItemProps) {
-  const { selectedValue, setSelectedValue, size, disabled: rootDisabled } = useSegmentedControlContext()
+export function Item<T extends string>({
+  value,
+  color = 'green',
+  disabled,
+  children,
+  onClick,
+  ...rest
+}: SegmentedItemProps<T>) {
+  const { selectedValue, setSelectedValue, size, disabled: rootDisabled } = useSegmentedControlContext<T>()
   const isSelected = selectedValue === value
   const isDisabled = rootDisabled || disabled
 

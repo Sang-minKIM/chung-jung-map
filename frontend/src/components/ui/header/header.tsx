@@ -120,4 +120,5 @@ const headerContainerStyles = (theme: Theme) => css`
   top: 0;
   z-index: 50;
   box-shadow: ${theme.shadows.sm};
+  background-color: ${theme.colors.white};
 `
