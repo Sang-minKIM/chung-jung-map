@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from '~/components/layout/flex'
+import { Flex, type FlexProps } from '~/components/layout/flex'
 import { useControllableState } from '~/hooks/use-controllable-state/use-controllable-state'
 import { SegmentedContext, type SegmentedContextValue, type Size } from './context'
 
@@ -28,7 +28,7 @@ import { SegmentedContext, type SegmentedContextValue, type Size } from './conte
  * )
  * ```
  */
-export interface SegmentedRootProps<T extends string> extends React.HTMLAttributes<HTMLDivElement> {
+export interface SegmentedRootProps<T extends string> extends FlexProps, React.HTMLAttributes<HTMLDivElement> {
   value?: T
   defaultValue?: T
   onValueChange?: (next: T) => void

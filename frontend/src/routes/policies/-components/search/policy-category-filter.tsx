@@ -25,7 +25,11 @@ export function PolicyCategoryFilter() {
   }
 
   return (
-    <SegmentedControl.Root<PolicyCategories> value={search.category ?? '전체'} onValueChange={handleCategoryChange}>
+    <SegmentedControl.Root<PolicyCategories>
+      wrap="wrap"
+      value={search.category ?? '전체'}
+      onValueChange={handleCategoryChange}
+    >
       <SegmentedControl.Item value="전체">
         <Text fontSize="sm" fontWeight="semibold" color="inherit">
           전체
