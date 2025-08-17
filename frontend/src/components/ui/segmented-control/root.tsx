@@ -35,6 +35,7 @@ export interface SegmentedRootProps<T extends string> extends React.HTMLAttribut
   size?: Size
   disabled?: boolean
   gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  as?: React.ElementType
   children: React.ReactNode
 }
 
@@ -45,6 +46,7 @@ export function Root<T extends string>({
   size = 'md',
   disabled,
   gap = 'sm',
+  as = 'nav',
   children,
   ...rest
 }: SegmentedRootProps<T>) {
@@ -63,7 +65,7 @@ export function Root<T extends string>({
 
   return (
     <SegmentedContext.Provider value={contextValue}>
-      <Flex role="radiogroup" align="center" gap={gap} {...rest}>
+      <Flex as={as} role="radiogroup" align="center" gap={gap} {...rest}>
         {children}
       </Flex>
     </SegmentedContext.Provider>
