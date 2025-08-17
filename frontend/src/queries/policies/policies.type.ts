@@ -12,7 +12,7 @@ export const PoliciesSearchSchema = z.object({
 
 export type PoliciesSearch = z.infer<typeof PoliciesSearchSchema>
 
-type Policy = {
+export type Policy = {
   id: string
   title: string
   category: string
