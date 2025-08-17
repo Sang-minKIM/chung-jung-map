@@ -12,11 +12,12 @@ export const PoliciesSearchSchema = z.object({
 
 export type PoliciesSearch = z.infer<typeof PoliciesSearchSchema>
 
-export type Policy = {
+type Policy = {
   id: string
   title: string
   category: string
   targetGroup: string
+  description: string
 }
 
 type PoliciesFilters = {
