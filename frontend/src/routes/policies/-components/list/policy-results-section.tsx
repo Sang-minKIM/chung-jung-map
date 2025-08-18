@@ -11,7 +11,7 @@ export function PolicyResultsSection() {
 
   const {
     data: { data: policies },
-  } = useSuspenseQuery(getPoliciesQueryOptions(search))
+  } = useSuspenseQuery(getPoliciesQueryOptions())
 
   return (
     <Box as="section" py="xl">

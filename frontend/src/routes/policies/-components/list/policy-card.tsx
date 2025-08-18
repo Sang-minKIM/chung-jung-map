@@ -5,10 +5,11 @@ import { Dot } from '~/components/ui/dot'
 import { css } from '@emotion/react'
 import { Button } from '~/components/ui/button'
 import { Building2 } from 'lucide-react'
-import type { Policy } from '~/queries/policies/policies.type'
+import type { PoliciesResponse } from '~/queries/policies/policies.type'
 import { POLICY_CATEGORY_OPTIONS } from '../../-constants/policy-category-options'
+import type { Prettify } from '~/types/prettify'
 
-export function PolicyCard({ policy }: { policy: Policy }) {
+export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data'][number]> }) {
   const categoryMeta =
     POLICY_CATEGORY_OPTIONS.find((category) => category.value === policy.category) ?? UNDEFINED_CATEGORY
 
