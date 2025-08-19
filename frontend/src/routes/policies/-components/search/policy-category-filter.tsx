@@ -1,14 +1,14 @@
 import { useNavigate } from '@tanstack/react-router'
 import { SegmentedControl } from '~/components/ui/segmented-control'
 import { Route } from '../../index'
-import type { PoliciesSearch } from '~/queries/policies/policies.type'
+import type { PoliciesSearch } from '../../-types/search'
 import { Dot } from '~/components/ui/dot'
 import { Flex } from '~/components/layout/flex'
 import { Text } from '~/components/typo/text'
 import type { Prettify } from '~/types/prettify'
 import { POLICY_CATEGORY_OPTIONS } from '../../-constants/policy-category-options'
 
-type PolicyCategories = Prettify<NonNullable<PoliciesSearch['category']> | '전체'>
+type PolicyCategories = Prettify<NonNullable<PoliciesSearch['category']> | typeof DEFAULT_CATEGORY>
 
 export function PolicyCategoryFilter() {
   const search = Route.useSearch()
@@ -19,7 +19,6 @@ export function PolicyCategoryFilter() {
       search: (prev) => ({
         ...prev,
         category: category === DEFAULT_CATEGORY ? undefined : category,
-        page: 1,
       }),
       replace: true,
     })

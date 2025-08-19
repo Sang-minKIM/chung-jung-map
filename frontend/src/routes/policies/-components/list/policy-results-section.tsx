@@ -6,12 +6,24 @@ import { Box } from '~/components/layout/box'
 import { Grid } from '~/components/layout/grid'
 import { PolicyCard } from './policy-card'
 
+import { filter, pipe, toArray, isUndefined, unless } from '@fxts/core'
+
 export function PolicyResultsSection() {
   const search = Route.useSearch()
 
-  const {
-    data: { data: policies },
-  } = useSuspenseQuery(getPoliciesQueryOptions(search))
+  const { data: policies } = useSuspenseQuery({
+    ...getPoliciesQueryOptions(),
+    select: (data) => {
+      return pipe(
+        data.data,
+        unless(
+          () => isUndefined(search.category),
+          filter((policy) => policy.category === search.category)
+        ),
+        toArray
+      )
+    },
+  })
 
   return (
     <Box as="section" py="xl">
