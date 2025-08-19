@@ -6,23 +6,32 @@ import { Box } from '~/components/layout/box'
 import { Grid } from '~/components/layout/grid'
 import { PolicyCard } from './policy-card'
 
-import { filter, pipe, toArray, isUndefined, unless } from '@fxts/core'
+import { filter, pipe, toArray, isUndefined, unless, some, map } from '@fxts/core'
 
 export function PolicyResultsSection() {
   const search = Route.useSearch()
 
   const { data: policies } = useSuspenseQuery({
     ...getPoliciesQueryOptions(),
-    select: (data) => {
-      return pipe(
-        data.data,
+    select: ({ data: policies }) =>
+      pipe(
+        policies,
         unless(
           () => isUndefined(search.category),
-          filter((policy) => policy.category === search.category)
+          filter((policy) => policy.category === search.category!)
+        ),
+        unless(
+          () => isUndefined(search.keyword),
+          filter((policy) =>
+            pipe(
+              [policy.title, policy.description],
+              map(normalizeText),
+              some((field) => pipe(search.keyword!, normalizeText, (keyword) => field.includes(keyword)))
+            )
+          )
         ),
         toArray
-      )
-    },
+      ),
   })
 
   return (
@@ -38,4 +47,8 @@ export function PolicyResultsSection() {
       </Grid>
     </Box>
   )
+}
+
+function normalizeText(text: string) {
+  return text.toLowerCase().replace(/\s+/g, '')
 }
