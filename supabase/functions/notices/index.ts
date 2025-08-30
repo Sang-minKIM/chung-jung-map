@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
         const offset = (page - 1) * limit;
 
         // 정책 ID (옵션)
-        const policyId = searchParams.get("policy_id");
+        const policyId = searchParams.get("policyId");
 
         console.log(`공고 리스트 요청 - 페이지: ${page}, 한계: ${limit}, 정책ID: ${policyId || "없음"}`);
 

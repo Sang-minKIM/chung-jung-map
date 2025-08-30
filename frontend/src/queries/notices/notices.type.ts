@@ -4,7 +4,7 @@ import type { PaginationResponse } from '../types'
 export const NoticesSearchSchema = z.object({
   page: z.number().min(1).optional().default(1),
   limit: z.number().min(1).max(100).optional().default(20),
-  policy_id: z.string().optional(),
+  policyId: z.string().optional(),
 })
 
 export type NoticesSearchParams = z.infer<typeof NoticesSearchSchema>
