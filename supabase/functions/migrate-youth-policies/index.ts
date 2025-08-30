@@ -225,26 +225,52 @@ Deno.serve(async (req) => {
 
         console.log("Starting Youth Policy migration process...");
 
-        // 1단계: 기존 청년정책 데이터 조회 (새 필드들 중 하나라도 null인 것들)
-        const { data: existingNotices, error: fetchError } = await supabase
-            .from("notices")
-            .select(
-                `
-                id, policy_number, start_date, end_date, original_url, content_summary,
-                description, support_content, additional_info, operating_institution,
-                application_method, screening_method, required_documents, reference_url
-            `
-            )
-            .not("policy_number", "is", null) // policy_number가 있는 것들만
-            .or(
-                "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
-            ); // 새 필드들 중 하나라도 null인 경우
+        // 1단계: 기존 청년정책 데이터 전체 조회 (새 필드들 중 하나라도 null인 것들)
+        console.log("기존 청년정책 데이터 조회 중...");
 
-        if (fetchError) {
-            throw new Error(`기존 데이터 조회 실패: ${fetchError.message}`);
+        let existingNotices: ExistingNotice[] = [];
+        let currentPage = 0;
+        const pageSize = 1000;
+
+        while (true) {
+            const { data: pageData, error: fetchError } = await supabase
+                .from("notices")
+                .select(
+                    `
+                    id, policy_number, start_date, end_date, original_url, content_summary,
+                    description, support_content, additional_info, operating_institution,
+                    application_method, screening_method, required_documents, reference_url
+                `
+                )
+                .not("policy_number", "is", null) // policy_number가 있는 것들만
+                .or(
+                    "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
+                ) // 새 필드들 중 하나라도 null인 경우
+                .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1)
+                .order("id");
+
+            if (fetchError) {
+                throw new Error(`기존 데이터 조회 실패: ${fetchError.message}`);
+            }
+
+            if (!pageData || pageData.length === 0) {
+                console.log(`페이지 ${currentPage + 1}: 더 이상 데이터가 없습니다. 조회 완료`);
+                break;
+            }
+
+            existingNotices = existingNotices.concat(pageData);
+            console.log(`페이지 ${currentPage + 1}: ${pageData.length}개 조회, 누적: ${existingNotices.length}개`);
+
+            // 페이지 크기보다 적게 반환되면 마지막 페이지
+            if (pageData.length < pageSize) {
+                console.log("마지막 페이지 도달. 조회 완료");
+                break;
+            }
+
+            currentPage++;
         }
 
-        console.log(`마이그레이션 대상: ${existingNotices?.length || 0}개`);
+        console.log(`전체 마이그레이션 대상: ${existingNotices.length}개`);
 
         if (!existingNotices || existingNotices.length === 0) {
             return new Response(
