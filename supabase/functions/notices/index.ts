@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
             // 2. 유사도 임계값에 해당하는 전체 개수 조회
             const { data: totalCountData, error: countError } = await supabaseClient.rpc("count_similar_notices", {
                 query_embedding: policyData.vector,
-                similarity_threshold: 0.85, // 85% 이상 유사도
+                similarity_threshold: 0.83, // 83% 이상 유사도
             });
 
             if (countError) {
@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
             // pgvector 타입이므로 벡터를 그대로 전달
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
                 query_embedding: policyData.vector,
-                similarity_threshold: 0.85, // 85% 이상 유사도
+                similarity_threshold: 0.83, // 83% 이상 유사도
                 match_count: limit,
                 offset_count: offset,
             });
