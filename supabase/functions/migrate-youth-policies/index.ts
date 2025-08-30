@@ -66,7 +66,7 @@ interface ExistingNotice {
     reference_url: string | null;
 }
 
-async function fetchAllYouthPoliciesBatch(apiKey: string, maxItems: number = 2000): Promise<YouthPolicyItem[]> {
+async function fetchAllYouthPoliciesBatch(apiKey: string, maxItems: number = 10000): Promise<YouthPolicyItem[]> {
     console.log(`청년정책 데이터 배치 수집 시작... (최대 ${maxItems}개)`);
 
     let allPolicies: YouthPolicyItem[] = [];
@@ -259,9 +259,9 @@ Deno.serve(async (req) => {
             );
         }
 
-        // 2단계: 청년정책 API에서 배치로 데이터 수집 (최대 2000개)
+        // 2단계: 청년정책 API에서 배치로 데이터 수집 (최대 10000개)
         console.log("청년정책 API에서 배치 데이터 수집 중...");
-        const allPolicies = await fetchAllYouthPoliciesBatch(youthPolicyApiKey, 2000);
+        const allPolicies = await fetchAllYouthPoliciesBatch(youthPolicyApiKey, 10000);
         console.log(`배치 데이터 수집 완료: ${allPolicies.length}개`);
 
         let updatedCount = 0;
