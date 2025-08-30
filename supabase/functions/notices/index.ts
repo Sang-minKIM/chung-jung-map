@@ -76,19 +76,20 @@ Deno.serve(async (req) => {
 
         let notices: NoticeWithSimilarity[] = [];
         let totalCount = 0;
+        let policy: PolicyRow | null = null;
 
         if (policyId) {
             // 정책 ID가 제공된 경우: 벡터 유사도 기반 검색
             console.log(`정책 ID ${policyId}와 유사한 공고 검색 시작`);
 
             // 1. 해당 정책의 벡터 가져오기
-            const { data: policy, error: policyError } = await supabaseClient
+            const { data: policyData, error: policyError } = await supabaseClient
                 .from("policies")
                 .select("id, title, category, vector")
                 .eq("id", policyId)
                 .single();
 
-            if (policyError || !policy) {
+            if (policyError || !policyData) {
                 return new Response(
                     JSON.stringify({
                         error: "정책을 찾을 수 없습니다.",
@@ -101,7 +102,9 @@ Deno.serve(async (req) => {
                 );
             }
 
-            if (!policy.vector) {
+            policy = policyData;
+
+            if (!policyData.vector) {
                 return new Response(
                     JSON.stringify({
                         error: "해당 정책의 벡터가 생성되지 않았습니다. 먼저 정책 벡터를 생성해주세요.",
@@ -115,7 +118,7 @@ Deno.serve(async (req) => {
             }
 
             // 2. 벡터 유사도 검색 (PostgreSQL에서 cosine similarity 사용)
-            const vectorStr = `[${policy.vector.join(",")}]`;
+            const vectorStr = `[${policyData.vector.join(",")}]`;
 
             // 유사도 검색 쿼리 (cosine similarity 사용)
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
@@ -194,12 +197,14 @@ Deno.serve(async (req) => {
                 totalCount,
                 totalPages,
             },
-            ...(policyId && {
-                policyInfo: {
-                    id: parseInt(policyId),
-                    searchType: "vector_similarity",
-                },
-            }),
+            ...(policyId &&
+                policy && {
+                    policyInfo: {
+                        id: parseInt(policyId),
+                        title: policy.title,
+                        searchType: "vector_similarity",
+                    },
+                }),
         };
 
         return new Response(JSON.stringify(response), {
