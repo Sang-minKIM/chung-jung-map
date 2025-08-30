@@ -225,7 +225,7 @@ Deno.serve(async (req) => {
 
         console.log("Starting Youth Policy migration process...");
 
-        // 1단계: 기존 청년정책 데이터 조회 (start_date가 null인 것들만)
+        // 1단계: 기존 청년정책 데이터 조회 (새 필드들 중 하나라도 null인 것들)
         const { data: existingNotices, error: fetchError } = await supabase
             .from("notices")
             .select(
@@ -236,7 +236,9 @@ Deno.serve(async (req) => {
             `
             )
             .not("policy_number", "is", null) // policy_number가 있는 것들만
-            .is("start_date", null); // start_date가 null인 것들만
+            .or(
+                "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
+            ); // 새 필드들 중 하나라도 null인 경우
 
         if (fetchError) {
             throw new Error(`기존 데이터 조회 실패: ${fetchError.message}`);
