@@ -51,19 +51,22 @@ interface ExistingNotice {
     content_summary: string | null;
 }
 
-async function fetchYouthPolicyByNumber(apiKey: string, policyNumber: string): Promise<YouthPolicyItem | null> {
-    // 페이지별로 검색해서 해당 정책번호 찾기
+async function fetchAllYouthPoliciesBatch(apiKey: string, maxItems: number = 2000): Promise<YouthPolicyItem[]> {
+    console.log(`청년정책 데이터 배치 수집 시작... (최대 ${maxItems}개)`);
+
+    let allPolicies: YouthPolicyItem[] = [];
     let currentPage = 1;
     const pageSize = 100;
 
-    while (currentPage <= 50) {
-        // 최대 50페이지까지만 검색
+    while (allPolicies.length < maxItems) {
         try {
             const url = new URL("https://www.youthcenter.go.kr/go/ythip/getPlcy");
             url.searchParams.set("apiKeyNm", apiKey);
             url.searchParams.set("pageNum", currentPage.toString());
             url.searchParams.set("pageSize", pageSize.toString());
             url.searchParams.set("rtnType", "json");
+
+            console.log(`Fetching youth policy page ${currentPage} from:`, url.toString());
 
             const response = await fetch(url.toString());
             if (!response.ok) {
@@ -78,29 +81,49 @@ async function fetchYouthPolicyByNumber(apiKey: string, policyNumber: string): P
                 break;
             }
 
-            // 해당 정책번호 찾기
-            const foundPolicy = data.result.youthPolicyList.find((policy) => policy.plcyNo === policyNumber);
-            if (foundPolicy) {
-                console.log(`정책번호 ${policyNumber} 찾음 (page ${currentPage})`);
-                return foundPolicy;
-            }
+            const policies = data.result.youthPolicyList;
 
             // 더 이상 데이터가 없으면 종료
-            if (data.result.youthPolicyList.length === 0) {
+            if (policies.length === 0) {
+                console.log(`Page ${currentPage}: 더 이상 데이터가 없습니다. 수집 완료`);
+                break;
+            }
+
+            // 최대 개수 제한 적용
+            const remainingSlots = maxItems - allPolicies.length;
+            const policiesToAdd = policies.slice(0, remainingSlots);
+
+            allPolicies = allPolicies.concat(policiesToAdd);
+            console.log(`Page ${currentPage}: ${policiesToAdd.length}개 수집, 누적: ${allPolicies.length}개`);
+
+            // 목표 개수에 도달했으면 종료
+            if (allPolicies.length >= maxItems) {
+                console.log(`목표 개수(${maxItems}개) 도달. 수집 완료`);
+                break;
+            }
+
+            // 전체 데이터를 다 수집했으면 종료
+            if (allPolicies.length >= data.result.pagging.totalCount) {
+                console.log("모든 페이지 수집 완료");
                 break;
             }
 
             currentPage++;
 
-            // API 호출 제한을 위한 지연
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            // API 호출 제한을 위한 지연 (500ms)
+            await new Promise((resolve) => setTimeout(resolve, 500));
         } catch (error) {
-            console.error(`페이지 ${currentPage} 검색 중 오류:`, error.message);
+            console.error(`페이지 ${currentPage} 수집 중 오류:`, error.message);
             break;
         }
     }
 
-    return null;
+    console.log(`배치 수집 완료: ${allPolicies.length}개 청년정책`);
+    return allPolicies;
+}
+
+function findPolicyByNumber(policies: YouthPolicyItem[], policyNumber: string): YouthPolicyItem | null {
+    return policies.find((policy) => policy.plcyNo === policyNumber) || null;
 }
 
 function formatDate(dateStr?: string): string | null {
@@ -215,21 +238,26 @@ Deno.serve(async (req) => {
             );
         }
 
+        // 2단계: 청년정책 API에서 배치로 데이터 수집 (최대 2000개)
+        console.log("청년정책 API에서 배치 데이터 수집 중...");
+        const allPolicies = await fetchAllYouthPoliciesBatch(youthPolicyApiKey, 2000);
+        console.log(`배치 데이터 수집 완료: ${allPolicies.length}개`);
+
         let updatedCount = 0;
         let skippedCount = 0;
         const errors: string[] = [];
 
-        // 2단계: 각 정책에 대해 최신 데이터 조회 및 업데이트
+        // 3단계: 기존 데이터와 매칭하여 업데이트
         for (const notice of existingNotices) {
             try {
                 console.log(`Processing notice ID ${notice.id}, policy_number: ${notice.policy_number}`);
 
-                // API에서 해당 정책번호의 최신 데이터 조회
-                const latestPolicy = await fetchYouthPolicyByNumber(youthPolicyApiKey, notice.policy_number);
+                // 메모리에서 해당 정책번호 찾기 (API 호출 없음)
+                const latestPolicy = findPolicyByNumber(allPolicies, notice.policy_number);
 
                 if (!latestPolicy) {
                     skippedCount++;
-                    console.log(`정책번호 ${notice.policy_number}를 API에서 찾을 수 없음`);
+                    console.log(`정책번호 ${notice.policy_number}를 배치 데이터에서 찾을 수 없음`);
                     continue;
                 }
 
@@ -282,8 +310,8 @@ Deno.serve(async (req) => {
                     console.log(`No updates needed for notice ID ${notice.id}`);
                 }
 
-                // API 호출 제한을 위한 지연
-                await new Promise((resolve) => setTimeout(resolve, 100));
+                // 배치 처리이므로 지연 시간 단축
+                await new Promise((resolve) => setTimeout(resolve, 10));
             } catch (error) {
                 const errorMessage = `Notice ID ${notice.id} 처리 중 오류: ${error.message}`;
                 errors.push(errorMessage);
