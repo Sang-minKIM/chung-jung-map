@@ -39,6 +39,12 @@ interface YouthPolicyItem {
     aplyMthCn?: string; // 신청방법내용 (구버전)
     plcyAplyMthdCn?: string; // 정책신청방법내용
     opshrInsdNm?: string; // 운영기관명
+    // 새로 추가된 상세 필드들
+    plcyExplnCn?: string; // 정책설명
+    etcMttrCn?: string; // 기타내용
+    srngMthdCn?: string; // 심사방법
+    sbmsnDcmntCn?: string; // 제출서류내용
+    refUrlAddr1?: string; // 참고URL
     [key: string]: any; // Additional fields
 }
 
@@ -49,6 +55,15 @@ interface ExistingNotice {
     end_date: string | null;
     original_url: string | null;
     content_summary: string | null;
+    // 새로 추가된 상세 필드들
+    description: string | null;
+    support_content: string | null;
+    additional_info: string | null;
+    operating_institution: string | null;
+    application_method: string | null;
+    screening_method: string | null;
+    required_documents: string | null;
+    reference_url: string | null;
 }
 
 async function fetchAllYouthPoliciesBatch(apiKey: string, maxItems: number = 2000): Promise<YouthPolicyItem[]> {
@@ -213,7 +228,13 @@ Deno.serve(async (req) => {
         // 1단계: 기존 청년정책 데이터 조회 (start_date가 null인 것들만)
         const { data: existingNotices, error: fetchError } = await supabase
             .from("notices")
-            .select("id, policy_number, start_date, end_date, original_url, content_summary")
+            .select(
+                `
+                id, policy_number, start_date, end_date, original_url, content_summary,
+                description, support_content, additional_info, operating_institution,
+                application_method, screening_method, required_documents, reference_url
+            `
+            )
             .not("policy_number", "is", null) // policy_number가 있는 것들만
             .is("start_date", null); // start_date가 null인 것들만
 
@@ -281,7 +302,7 @@ Deno.serve(async (req) => {
                     updateData.original_url = latestPolicy.aplyUrlAddr || latestPolicy.plcyUrl;
                 }
 
-                // content_summary에 plcyAplyMthdCn 추가
+                // content_summary에 plcyAplyMthdCn 추가 (기존 로직 유지)
                 if (latestPolicy.plcyAplyMthdCn && latestPolicy.plcyAplyMthdCn.trim() !== "") {
                     const currentSummary = notice.content_summary || "";
                     if (!currentSummary.includes(latestPolicy.plcyAplyMthdCn)) {
@@ -289,6 +310,32 @@ Deno.serve(async (req) => {
                             ? `${currentSummary} | ${latestPolicy.plcyAplyMthdCn}`
                             : latestPolicy.plcyAplyMthdCn;
                     }
+                }
+
+                // 새로운 상세 필드들 업데이트 (null인 경우에만)
+                if (!notice.description && latestPolicy.plcyExplnCn) {
+                    updateData.description = latestPolicy.plcyExplnCn;
+                }
+                if (!notice.support_content && latestPolicy.plcySprtCn) {
+                    updateData.support_content = latestPolicy.plcySprtCn;
+                }
+                if (!notice.additional_info && latestPolicy.etcMttrCn) {
+                    updateData.additional_info = latestPolicy.etcMttrCn;
+                }
+                if (!notice.operating_institution && latestPolicy.opshrInsdNm) {
+                    updateData.operating_institution = latestPolicy.opshrInsdNm;
+                }
+                if (!notice.application_method && (latestPolicy.plcyAplyMthdCn || latestPolicy.aplyMthCn)) {
+                    updateData.application_method = latestPolicy.plcyAplyMthdCn || latestPolicy.aplyMthCn;
+                }
+                if (!notice.screening_method && latestPolicy.srngMthdCn) {
+                    updateData.screening_method = latestPolicy.srngMthdCn;
+                }
+                if (!notice.required_documents && latestPolicy.sbmsnDcmntCn) {
+                    updateData.required_documents = latestPolicy.sbmsnDcmntCn;
+                }
+                if (!notice.reference_url && latestPolicy.refUrlAddr1) {
+                    updateData.reference_url = latestPolicy.refUrlAddr1;
                 }
 
                 // 업데이트할 데이터가 있는 경우에만 업데이트

@@ -39,6 +39,12 @@ interface YouthPolicyItem {
     aplyMthCn?: string; // 신청방법내용 (구버전)
     plcyAplyMthdCn?: string; // 정책신청방법내용
     opshrInsdNm?: string; // 운영기관명
+    // 새로 추가된 상세 필드들
+    plcyExplnCn?: string; // 정책설명
+    etcMttrCn?: string; // 기타내용
+    srngMthdCn?: string; // 심사방법
+    sbmsnDcmntCn?: string; // 제출서류내용
+    refUrlAddr1?: string; // 참고URL
     [key: string]: any; // Additional fields
 }
 
@@ -302,7 +308,16 @@ Deno.serve(async (req) => {
                     original_url: policy.aplyUrlAddr || policy.plcyUrl, // 신청 URL 우선, 없으면 정책 URL
                     start_date: startDate,
                     end_date: endDate,
-                    content_summary: buildContentSummary(policy),
+                    content_summary: buildContentSummary(policy), // 기존 summary 로직 유지
+                    // 새로 추가된 상세 필드들
+                    description: policy.plcyExplnCn || null,
+                    support_content: policy.plcySprtCn || null,
+                    additional_info: policy.etcMttrCn || null,
+                    operating_institution: policy.opshrInsdNm || null,
+                    application_method: policy.plcyAplyMthdCn || policy.aplyMthCn || null,
+                    screening_method: policy.srngMthdCn || null,
+                    required_documents: policy.sbmsnDcmntCn || null,
+                    reference_url: policy.refUrlAddr1 || null,
                 };
 
                 console.log("Inserting policy:", {
