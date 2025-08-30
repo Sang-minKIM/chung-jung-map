@@ -10,6 +10,8 @@ import { Heading } from '~/components/typo/heading'
 import { Text } from '~/components/typo/text'
 import { Button } from '../button'
 import { Box } from '~/components/layout/box'
+import { Separated } from '~/components/kits/separated'
+import { Separator } from '../separator'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -48,11 +50,15 @@ export function Header() {
         </Flex>
 
         <MobileNav isOpen={isMenuOpen}>
-          {navItems.map((item) => (
-            <Link key={item.to} to={item.to} onClick={() => setIsMenuOpen(false)}>
-              {item.name}
-            </Link>
-          ))}
+          <Flex direction="column" gap="lg">
+            <Separated by={<Separator size="full" color="grey300" />}>
+              {navItems.map((item) => (
+                <Link key={item.to} to={item.to} onClick={() => setIsMenuOpen(false)}>
+                  {item.name}
+                </Link>
+              ))}
+            </Separated>
+          </Flex>
         </MobileNav>
       </Container>
     </Box>
@@ -61,11 +67,7 @@ export function Header() {
 
 const navItems = [
   { name: '정책 정보', to: '/policies' as const },
-  // { name: '금융 지원', to: '/' as const },
-  // { name: '주택 지원', to: '/' as const },
-  // { name: '취업 지원', to: '/' as const },
-  // { name: '교육 지원', to: '/' as const },
-  // { name: '커뮤니티', to: '/' as const },
+  { name: '공고 정보', to: '/notices' as const },
 ]
 
 const LogoWrapper = styled.div`
@@ -91,7 +93,6 @@ const DesktopNav = styled.nav`
 
 const MobileNav = styled.nav<{ isOpen: boolean }>`
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
-  border-top: 1px solid ${({ theme }) => theme.colors.grey200};
   background-color: white;
   padding: 16px 0;
   @media (min-width: 768px) {
