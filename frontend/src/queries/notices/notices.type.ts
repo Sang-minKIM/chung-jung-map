@@ -25,6 +25,7 @@ export type NoticesResponse = {
   pagination: PaginationResponse
   policyInfo?: {
     id: number
+    title: string
     searchType: 'vector_similarity'
   }
 }
