@@ -21,7 +21,7 @@ interface PolicyRow {
     id: number;
     title: string;
     category: string;
-    vector: number[] | null;
+    vector: any; // pgvector 타입 (Supabase에서 자동으로 처리됨)
 }
 
 interface PaginationParams {
@@ -116,12 +116,10 @@ Deno.serve(async (req) => {
                 );
             }
 
-            // 2. 벡터 유사도 검색 (PostgreSQL에서 cosine similarity 사용)
-            const vectorStr = `[${policyData.vector.join(",")}]`;
-
-            // 유사도 검색 쿼리 (cosine similarity 사용)
+            // 2. 벡터 유사도 검색 (PostgreSQL pgvector 사용)
+            // pgvector 타입이므로 벡터를 그대로 전달
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
-                query_embedding: vectorStr,
+                query_embedding: policyData.vector,
                 similarity_threshold: 0.3, // 30% 이상 유사도
                 match_count: limit,
                 offset_count: offset,
