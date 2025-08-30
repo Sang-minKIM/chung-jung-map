@@ -9,14 +9,12 @@ interface NoticeRow {
     id: number;
     title: string;
     category: string | null;
-    source: string | null;
     original_url: string | null;
     start_date: string | null;
     end_date: string | null;
-    content_summary: string | null;
-    policy_number: string | null;
-    created_at: string;
-    vector: number[] | null;
+    // NoticeListItem에서 사용하는 필드들만
+    description: string | null;
+    operating_institution: string | null;
 }
 
 interface PolicyRow {
@@ -36,16 +34,17 @@ interface NoticeWithSimilarity extends NoticeRow {
     similarity?: number;
 }
 
-// 데이터베이스 데이터를 카멜 케이스로 변환하는 함수
+// 데이터베이스 데이터를 프론트엔드 NoticeListItem 타입으로 변환하는 함수
 function transformNoticeToResponse(notice: NoticeWithSimilarity) {
     return {
         id: notice.id,
         title: notice.title,
         category: notice.category,
-        source: notice.source,
+        description: notice.description,
         url: notice.original_url,
         startDate: notice.start_date,
         endDate: notice.end_date,
+        operatingInstitution: notice.operating_institution,
         ...(notice.similarity !== undefined && { similarity: notice.similarity }),
     };
 }
@@ -163,13 +162,13 @@ Deno.serve(async (req) => {
 
             totalCount = count || 0;
 
-            // 공고 데이터 조회 (필요한 필드만 선택)
+            // 공고 데이터 조회 (프론트엔드 NoticeListItem에서 사용하는 필드만 선택)
             const { data: noticesData, error: noticesError } = await supabaseClient
                 .from("notices")
                 .select(
                     `
-                    id, title, category, source, original_url, 
-                    start_date, end_date
+                    id, title, category, description, original_url, 
+                    start_date, end_date, operating_institution
                 `
                 )
                 .order("created_at", { ascending: false })
