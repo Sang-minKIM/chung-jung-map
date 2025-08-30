@@ -36,6 +36,20 @@ interface NoticeWithSimilarity extends NoticeRow {
     similarity?: number;
 }
 
+// 데이터베이스 데이터를 카멜 케이스로 변환하는 함수
+function transformNoticeToResponse(notice: NoticeWithSimilarity) {
+    return {
+        id: notice.id,
+        title: notice.title,
+        category: notice.category,
+        source: notice.source,
+        url: notice.original_url,
+        startDate: notice.start_date,
+        endDate: notice.end_date,
+        ...(notice.similarity !== undefined && { similarity: notice.similarity }),
+    };
+}
+
 Deno.serve(async (req) => {
     // CORS Preflight 요청 처리
     if (req.method === "OPTIONS") {
@@ -58,10 +72,7 @@ Deno.serve(async (req) => {
         console.log(`공고 리스트 요청 - 페이지: ${page}, 한계: ${limit}, 정책ID: ${policyId || "없음"}`);
 
         // Supabase 클라이언트 생성
-        const supabaseClient = createClient(
-            Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-        );
+        const supabaseClient = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SERVICE_ROLE_KEY") ?? "");
 
         let notices: NoticeWithSimilarity[] = [];
         let totalCount = 0;
@@ -149,14 +160,13 @@ Deno.serve(async (req) => {
 
             totalCount = count || 0;
 
-            // 공고 데이터 조회
+            // 공고 데이터 조회 (필요한 필드만 선택)
             const { data: noticesData, error: noticesError } = await supabaseClient
                 .from("notices")
                 .select(
                     `
                     id, title, category, source, original_url, 
-                    start_date, end_date, content_summary, 
-                    policy_number, created_at
+                    start_date, end_date
                 `
                 )
                 .order("created_at", { ascending: false })
@@ -175,9 +185,9 @@ Deno.serve(async (req) => {
         const hasNext = page < totalPages;
         const hasPrev = page > 1;
 
-        // 응답 데이터 구성
+        // 응답 데이터 구성 (카멜 케이스로 변환)
         const response = {
-            data: notices,
+            data: notices.map(transformNoticeToResponse),
             pagination: {
                 page,
                 limit,
