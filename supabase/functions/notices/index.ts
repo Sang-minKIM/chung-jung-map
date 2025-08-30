@@ -116,12 +116,34 @@ Deno.serve(async (req) => {
                 );
             }
 
-            // 2. 벡터 유사도 검색 (PostgreSQL pgvector 사용)
+            // 2. 유사도 임계값에 해당하는 전체 개수 조회
+            const { data: totalCountData, error: countError } = await supabaseClient.rpc("count_similar_notices", {
+                query_embedding: policyData.vector,
+                similarity_threshold: 0.85, // 85% 이상 유사도
+            });
+
+            if (countError) {
+                console.error("벡터 개수 조회 오류:", countError);
+                return new Response(
+                    JSON.stringify({
+                        error: "벡터 개수 조회 중 오류가 발생했습니다.",
+                        details: countError.message,
+                    }),
+                    {
+                        headers: { ...corsHeaders, "Content-Type": "application/json" },
+                        status: 500,
+                    }
+                );
+            }
+
+            totalCount = totalCountData || 0;
+
+            // 3. 벡터 유사도 검색 (PostgreSQL pgvector 사용)
             // pgvector 타입이므로 벡터를 그대로 전달
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
                 query_embedding: policyData.vector,
                 similarity_threshold: 0.85, // 85% 이상 유사도
-                match_count: 1000,
+                match_count: limit,
                 offset_count: offset,
             });
 
@@ -140,9 +162,6 @@ Deno.serve(async (req) => {
             }
 
             notices = similarNotices || [];
-
-            // 유사도 검색의 경우 정확한 총 개수를 얻기 어려우므로 근사값 사용
-            totalCount = notices.length;
 
             console.log(`${notices.length}개의 유사한 공고를 찾았습니다`);
         } else {
