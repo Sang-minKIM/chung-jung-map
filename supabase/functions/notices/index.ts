@@ -120,8 +120,8 @@ Deno.serve(async (req) => {
             // pgvector 타입이므로 벡터를 그대로 전달
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
                 query_embedding: policyData.vector,
-                similarity_threshold: 0.3, // 30% 이상 유사도
-                match_count: limit,
+                similarity_threshold: 0.85, // 85% 이상 유사도
+                match_count: 1000,
                 offset_count: offset,
             });
 
@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
             notices = similarNotices || [];
 
             // 유사도 검색의 경우 정확한 총 개수를 얻기 어려우므로 근사값 사용
-            totalCount = notices.length < limit ? offset + notices.length : offset + limit + 1;
+            totalCount = notices.length;
 
             console.log(`${notices.length}개의 유사한 공고를 찾았습니다`);
         } else {
