@@ -13,15 +13,28 @@ export type Notice = {
   id: number
   title: string
   category: string | null
-  source: string | null
+  description: string | null
   url: string | null
   startDate: string | null
   endDate: string | null
+  supportContent: string | null
+  additionalInfo: string | null
+  operatingInstitution: string | null
+  applicationMethod: string | null
+  screeningMethod: string | null
+  requiredDocuments: string | null
+  referenceUrl: string | null
+}
+
+type NoticeListItem = Pick<
+  Notice,
+  'id' | 'title' | 'category' | 'description' | 'url' | 'startDate' | 'endDate' | 'operatingInstitution'
+> & {
   similarity?: number
 }
 
 export type NoticesResponse = {
-  data: Notice[]
+  data: NoticeListItem[]
   pagination: PaginationResponse
   policyInfo?: {
     id: number
