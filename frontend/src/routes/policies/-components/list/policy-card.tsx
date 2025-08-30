@@ -8,6 +8,7 @@ import { Building2 } from 'lucide-react'
 import type { PoliciesResponse } from '~/queries/policies/policies.type'
 import { POLICY_CATEGORY_OPTIONS } from '../../-constants/policy-category-options'
 import type { Prettify } from '~/types/prettify'
+import { Link } from '~/components/ui/link'
 
 export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data'][number]> }) {
   const categoryMeta =
@@ -52,11 +53,13 @@ export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data
               자세히 보기
             </Text>
           </Button>
-          <Button size="sm">
-            <Text fontSize="sm" fontWeight="semibold" p="xs" color="inherit">
-              관련 공고 보기
-            </Text>
-          </Button>
+          <Link to="/notices" search={{ policyId: policy.id }}>
+            <Button size="sm">
+              <Text fontSize="sm" fontWeight="semibold" p="xs" color="inherit">
+                관련 공고 보기
+              </Text>
+            </Button>
+          </Link>
         </Flex>
       </Flex>
     </Card>
