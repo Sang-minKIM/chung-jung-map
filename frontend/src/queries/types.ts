@@ -1,6 +1,6 @@
 export type PaginationResponse = {
   page: number
   limit: number
-  total: number
+  totalCount: number
   totalPages: number
 }
