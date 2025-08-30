@@ -38,7 +38,10 @@ interface YouthPolicyItem {
     plcySprttgCn?: string; // 정책지원대상내용
     aplyMthCn?: string; // 신청방법내용 (구버전)
     plcyAplyMthdCn?: string; // 정책신청방법내용
-    opshrInsdNm?: string; // 운영기관명
+    opshrInsdNm?: string; // 운영기관명 (구버전 - 사용안함)
+    sprvsnInstCdNm?: string; // 주관기관명
+    operInstCdNm?: string; // 운영기관명
+    rgtrInstCdNm?: string; // 등록기관명
     // 새로 추가된 상세 필드들
     plcyExplnCn?: string; // 정책설명
     etcMttrCn?: string; // 기타내용
@@ -59,6 +62,8 @@ interface ExistingNotice {
     description: string | null;
     support_content: string | null;
     additional_info: string | null;
+    supervising_institution: string | null;
+    registering_institution: string | null;
     operating_institution: string | null;
     application_method: string | null;
     screening_method: string | null;
@@ -237,14 +242,14 @@ Deno.serve(async (req) => {
                 .from("notices")
                 .select(
                     `
-                    id, policy_number, start_date, end_date, original_url, content_summary,
-                    description, support_content, additional_info, operating_institution,
-                    application_method, screening_method, required_documents, reference_url
-                `
+                id, policy_number, start_date, end_date, original_url, content_summary,
+                description, support_content, additional_info, supervising_institution, registering_institution, operating_institution,
+                application_method, screening_method, required_documents, reference_url
+            `
                 )
                 .not("policy_number", "is", null) // policy_number가 있는 것들만
                 .or(
-                    "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
+                    "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,supervising_institution.is.null,registering_institution.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
                 ) // 새 필드들 중 하나라도 null인 경우
                 .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1)
                 .order("id");
@@ -350,8 +355,14 @@ Deno.serve(async (req) => {
                 if (!notice.additional_info && latestPolicy.etcMttrCn) {
                     updateData.additional_info = latestPolicy.etcMttrCn;
                 }
-                if (!notice.operating_institution && latestPolicy.opshrInsdNm) {
-                    updateData.operating_institution = latestPolicy.opshrInsdNm;
+                if (!notice.supervising_institution && latestPolicy.sprvsnInstCdNm) {
+                    updateData.supervising_institution = latestPolicy.sprvsnInstCdNm;
+                }
+                if (!notice.registering_institution && latestPolicy.rgtrInstCdNm) {
+                    updateData.registering_institution = latestPolicy.rgtrInstCdNm;
+                }
+                if (!notice.operating_institution && latestPolicy.operInstCdNm) {
+                    updateData.operating_institution = latestPolicy.operInstCdNm;
                 }
                 if (!notice.application_method && (latestPolicy.plcyAplyMthdCn || latestPolicy.aplyMthCn)) {
                     updateData.application_method = latestPolicy.plcyAplyMthdCn || latestPolicy.aplyMthCn;

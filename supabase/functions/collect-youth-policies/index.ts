@@ -38,7 +38,10 @@ interface YouthPolicyItem {
     plcySprttgCn?: string; // 정책지원대상내용
     aplyMthCn?: string; // 신청방법내용 (구버전)
     plcyAplyMthdCn?: string; // 정책신청방법내용
-    opshrInsdNm?: string; // 운영기관명
+    opshrInsdNm?: string; // 운영기관명 (구버전 - 사용안함)
+    sprvsnInstCdNm?: string; // 주관기관명
+    operInstCdNm?: string; // 운영기관명
+    rgtrInstCdNm?: string; // 등록기관명
     // 새로 추가된 상세 필드들
     plcyExplnCn?: string; // 정책설명
     etcMttrCn?: string; // 기타내용
@@ -313,7 +316,9 @@ Deno.serve(async (req) => {
                     description: policy.plcyExplnCn || null,
                     support_content: policy.plcySprtCn || null,
                     additional_info: policy.etcMttrCn || null,
-                    operating_institution: policy.opshrInsdNm || null,
+                    supervising_institution: policy.sprvsnInstCdNm || null, // 주관기관
+                    registering_institution: policy.rgtrInstCdNm || null, // 등록기관
+                    operating_institution: policy.operInstCdNm || null, // 운영기관 (수정됨)
                     application_method: policy.plcyAplyMthdCn || policy.aplyMthCn || null,
                     screening_method: policy.srngMthdCn || null,
                     required_documents: policy.sbmsnDcmntCn || null,
