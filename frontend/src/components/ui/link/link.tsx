@@ -45,6 +45,7 @@ export interface LinkProps extends Omit<TanstackLinkProps, 'children'> {
  * ```
  *
  * @remarks
+ * - 버튼을 링크로 할 경우에는 사용하지 말것. Tanstack Router Link를 사용할 것.
  * - 호버 시 green 색상으로 변경
  * - Active 상태일 때 green 색상 + bold 폰트 (Tanstack Router가 자동으로 .active 클래스 추가)
  * - 포커스 시 접근성을 위한 focus ring 표시
