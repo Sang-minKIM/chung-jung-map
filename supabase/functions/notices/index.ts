@@ -15,6 +15,7 @@ interface NoticeRow {
     // NoticeListItem에서 사용하는 필드들만
     description: string | null;
     supervising_institution: string | null;
+    regional_authority: string | null;
 }
 
 interface PolicyRow {
@@ -45,6 +46,7 @@ function transformNoticeToResponse(notice: NoticeWithSimilarity) {
         startDate: notice.start_date,
         endDate: notice.end_date,
         supervisingInstitution: notice.supervising_institution,
+        regionalAuthority: notice.regional_authority,
         ...(notice.similarity !== undefined && { similarity: notice.similarity }),
     };
 }
@@ -185,7 +187,7 @@ Deno.serve(async (req) => {
                 .select(
                     `
                     id, title, category, description, original_url, 
-                    start_date, end_date, supervising_institution
+                    start_date, end_date, supervising_institution, regional_authority
                 `
                 )
                 .order("created_at", { ascending: false })
