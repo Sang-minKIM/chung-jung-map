@@ -1,17 +1,17 @@
 import { css, useTheme, type Theme } from '@emotion/react'
-import { Flex } from '~/components/layout/flex'
+import { Flex, type FlexProps } from '~/components/layout/flex'
 import { Text } from '~/components/typo/text'
 
-type TagColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple' | 'grey'
+type TagColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'navy' | 'purple' | 'grey500'
 
-interface TagProps {
+interface TagProps extends FlexProps {
   children: string
   color?: TagColor
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
-export function Tag({ children, color = 'green', size = 'md', className }: TagProps) {
+export function Tag({ children, color = 'green', size = 'md', className, ...rest }: TagProps) {
   const theme = useTheme()
   return (
     <Flex
@@ -19,6 +19,7 @@ export function Tag({ children, color = 'green', size = 'md', className }: TagPr
       justify="center"
       css={(theme: Theme) => [baseTagStyles(theme), sizeStyles[size](theme), colorStyles[color](theme)]}
       className={className}
+      {...rest}
     >
       <Text fontSize={theme.fontSizes[size]} fontWeight={theme.fontWeights.medium} color={color}>
         {children}
@@ -54,7 +55,7 @@ const colorStyles = {
   purple: (theme: Theme) => css`
     background-color: color-mix(in srgb, ${theme.colors.purple} 10%, transparent);
   `,
-  grey: (theme: Theme) => css`
+  grey500: (theme: Theme) => css`
     background-color: color-mix(in srgb, ${theme.colors.grey500} 10%, transparent);
   `,
 }
