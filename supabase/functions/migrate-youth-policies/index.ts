@@ -65,7 +65,7 @@ interface ExistingNotice {
     additional_info: string | null;
     supervising_institution: string | null;
     registering_institution: string | null;
-    regional_authority: string | null;
+    regional_institution: string | null;
     operating_institution: string | null;
     application_method: string | null;
     screening_method: string | null;
@@ -245,13 +245,13 @@ Deno.serve(async (req) => {
                 .select(
                     `
                 id, policy_number, start_date, end_date, original_url, content_summary,
-                description, support_content, additional_info, supervising_institution, registering_institution, regional_authority, operating_institution,
+                description, support_content, additional_info, supervising_institution, registering_institution, regional_institution, operating_institution,
                 application_method, screening_method, required_documents, reference_url
             `
                 )
                 .not("policy_number", "is", null) // policy_number가 있는 것들만
                 .or(
-                    "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,supervising_institution.is.null,registering_institution.is.null,regional_authority.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
+                    "start_date.is.null,description.is.null,support_content.is.null,additional_info.is.null,supervising_institution.is.null,registering_institution.is.null,regional_institution.is.null,operating_institution.is.null,application_method.is.null,screening_method.is.null,required_documents.is.null,reference_url.is.null"
                 ) // 새 필드들 중 하나라도 null인 경우
                 .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1)
                 .order("id");
@@ -363,8 +363,8 @@ Deno.serve(async (req) => {
                 if (!notice.registering_institution && latestPolicy.rgtrInstCdNm) {
                     updateData.registering_institution = latestPolicy.rgtrInstCdNm;
                 }
-                if (!notice.regional_authority && latestPolicy.rgtrHghrkInstCdNm) {
-                    updateData.regional_authority = latestPolicy.rgtrHghrkInstCdNm;
+                if (!notice.regional_institution && latestPolicy.rgtrHghrkInstCdNm) {
+                    updateData.regional_institution = latestPolicy.rgtrHghrkInstCdNm;
                 }
                 if (!notice.operating_institution && latestPolicy.operInstCdNm) {
                     updateData.operating_institution = latestPolicy.operInstCdNm;

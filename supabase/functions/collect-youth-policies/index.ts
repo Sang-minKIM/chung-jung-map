@@ -319,7 +319,7 @@ Deno.serve(async (req) => {
                     additional_info: policy.etcMttrCn || null,
                     supervising_institution: policy.sprvsnInstCdNm || null, // 주관기관
                     registering_institution: policy.rgtrInstCdNm || null, // 등록기관
-                    regional_authority: policy.rgtrHghrkInstCdNm || null, // 지역관할기관 (등록최상위기관)
+                    regional_institution: policy.rgtrHghrkInstCdNm || null, // 지역관할기관 (등록최상위기관)
                     operating_institution: policy.operInstCdNm || null, // 운영기관 (수정됨)
                     application_method: policy.plcyAplyMthdCn || policy.aplyMthCn || null,
                     screening_method: policy.srngMthdCn || null,
