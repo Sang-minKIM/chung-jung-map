@@ -1,0 +1,1 @@
+export { Separated } from './seperated'

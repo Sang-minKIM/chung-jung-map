@@ -49,7 +49,7 @@ SELECT
   active,
   jobname
 FROM cron.job
-WHERE jobname LIKE 'collect-lh-notices%';
+WHERE jobname LIKE 'collect-lh-notices%' OR jobname LIKE 'collect-youth-policies%';
 
 -- 작업 로그를 위한 테이블 생성 (선택사항)
 CREATE TABLE IF NOT EXISTS lh_collection_logs (
@@ -76,6 +76,24 @@ BEGIN
   WHERE created_at < NOW() - INTERVAL '30 days';
 END;
 $$;
+
+-- 청년정책 수집 작업을 매일 오후 12시에 실행하도록 스케줄링
+-- cron 표현식: '0 12 * * *' = 매일 오후 12시 (정오)
+SELECT cron.schedule(
+  'collect-youth-policies-daily',
+  '0 12 * * *',
+  $$
+  SELECT
+    net.http_post(
+      url := (SELECT CONCAT(current_setting('app.settings.supabase_url'), '/functions/v1/collect-youth-policies')),
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', CONCAT('Bearer ', current_setting('app.settings.supabase_service_role_key'))
+      ),
+      body := jsonb_build_object('scheduled', true, 'type', 'daily')
+    ) as request_id;
+  $$
+);
 
 -- 매일 자정에 오래된 로그 정리
 SELECT cron.schedule(

@@ -1,21 +1,22 @@
 import { Text } from '~/components/typo/text'
 import { Card } from '~/components/ui/card'
 import { Flex } from '~/components/layout/flex'
-import { Dot } from '~/components/ui/dot'
 import { css } from '@emotion/react'
 import { Button } from '~/components/ui/button'
-import { Building2 } from 'lucide-react'
-import type { PoliciesResponse } from '~/queries/policies/policies.type'
-import { POLICY_CATEGORY_OPTIONS } from '../../-constants/policy-category-options'
-import type { Prettify } from '~/types/prettify'
-import { Link } from '~/components/ui/link'
+import { Building2, Calendar } from 'lucide-react'
 
-export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data'][number]> }) {
+import type { Prettify } from '~/types/prettify'
+import type { NoticesResponse } from '~/queries/notices/notices.type'
+import { NOTICE_CATEGORY_OPTIONS } from '../../-constants/notice-category-options'
+import { Dot } from '~/components/ui/dot'
+
+export function NoticeCard({ notice }: { notice: Prettify<NoticesResponse['data'][number]> }) {
   const categoryMeta =
-    POLICY_CATEGORY_OPTIONS.find((category) => category.value === policy.category) ?? UNDEFINED_CATEGORY
+    NOTICE_CATEGORY_OPTIONS.find((category) => category.value === notice.category) ??
+    NOTICE_CATEGORY_OPTIONS.find((category) => category.value === '기타')!
 
   return (
-    <Card variant="surface" key={policy.id} as="li" p="xl" minHeight="280px">
+    <Card variant="basic" as="li" p="xl" minHeight="280px">
       <Flex direction="column" justify="between" height="100%">
         <Flex align="center" gap="sm">
           <Dot color={categoryMeta.color} size="md" />
@@ -24,7 +25,7 @@ export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data
           </Text>
         </Flex>
         <Text fontSize="md" fontWeight="bold">
-          {policy.title}
+          {notice.title}
         </Text>
         <Text
           fontSize="sm"
@@ -38,36 +39,30 @@ export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data
             overflow: hidden;
           `}
         >
-          {policy.description}
+          {notice.description}
         </Text>
 
         <Flex align="center" gap="xs">
           <Building2 size={16} color="var(--grey-600)" />
           <Text fontSize="sm" fontWeight="regular" p="xs" color="grey600">
-            추후 기관명 추가
+            {notice.supervisingInstitution}
           </Text>
         </Flex>
-        <Flex gap="sm">
-          <Button variant="outline" size="sm">
-            <Text fontSize="sm" fontWeight="semibold" p="xs">
-              자세히 보기
+        {notice.startDate && notice.endDate && (
+          <Flex align="center" gap="xs">
+            <Calendar size={16} color="var(--grey-600)" />
+            <Text fontSize="sm" fontWeight="regular" p="xs" color="grey600">
+              {notice.startDate} ~ {notice.endDate}
             </Text>
-          </Button>
-          <Link to="/notices" search={{ policyId: policy.id }}>
-            <Button size="sm">
-              <Text fontSize="sm" fontWeight="semibold" p="xs" color="inherit">
-                관련 공고 보기
-              </Text>
-            </Button>
-          </Link>
-        </Flex>
+          </Flex>
+        )}
+
+        <Button size="sm">
+          <Text fontSize="sm" fontWeight="semibold">
+            자세히 보기
+          </Text>
+        </Button>
       </Flex>
     </Card>
   )
 }
-
-const UNDEFINED_CATEGORY = {
-  label: '미분류',
-  value: '미분류',
-  color: 'grey500',
-} as const

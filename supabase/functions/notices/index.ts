@@ -9,21 +9,19 @@ interface NoticeRow {
     id: number;
     title: string;
     category: string | null;
-    source: string | null;
     original_url: string | null;
     start_date: string | null;
     end_date: string | null;
-    content_summary: string | null;
-    policy_number: string | null;
-    created_at: string;
-    vector: number[] | null;
+    // NoticeListItem에서 사용하는 필드들만
+    description: string | null;
+    supervising_institution: string | null;
 }
 
 interface PolicyRow {
     id: number;
     title: string;
     category: string;
-    vector: number[] | null;
+    vector: any; // pgvector 타입 (Supabase에서 자동으로 처리됨)
 }
 
 interface PaginationParams {
@@ -34,6 +32,21 @@ interface PaginationParams {
 
 interface NoticeWithSimilarity extends NoticeRow {
     similarity?: number;
+}
+
+// 데이터베이스 데이터를 프론트엔드 NoticeListItem 타입으로 변환하는 함수
+function transformNoticeToResponse(notice: NoticeWithSimilarity) {
+    return {
+        id: notice.id,
+        title: notice.title,
+        category: notice.category,
+        description: notice.description,
+        url: notice.original_url,
+        startDate: notice.start_date,
+        endDate: notice.end_date,
+        supervisingInstitution: notice.supervising_institution,
+        ...(notice.similarity !== undefined && { similarity: notice.similarity }),
+    };
 }
 
 Deno.serve(async (req) => {
@@ -53,31 +66,29 @@ Deno.serve(async (req) => {
         const offset = (page - 1) * limit;
 
         // 정책 ID (옵션)
-        const policyId = searchParams.get("policy_id");
+        const policyId = searchParams.get("policyId");
 
         console.log(`공고 리스트 요청 - 페이지: ${page}, 한계: ${limit}, 정책ID: ${policyId || "없음"}`);
 
         // Supabase 클라이언트 생성
-        const supabaseClient = createClient(
-            Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-        );
+        const supabaseClient = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SERVICE_ROLE_KEY") ?? "");
 
         let notices: NoticeWithSimilarity[] = [];
         let totalCount = 0;
+        let policy: PolicyRow | null = null;
 
         if (policyId) {
             // 정책 ID가 제공된 경우: 벡터 유사도 기반 검색
             console.log(`정책 ID ${policyId}와 유사한 공고 검색 시작`);
 
             // 1. 해당 정책의 벡터 가져오기
-            const { data: policy, error: policyError } = await supabaseClient
+            const { data: policyData, error: policyError } = await supabaseClient
                 .from("policies")
                 .select("id, title, category, vector")
                 .eq("id", policyId)
                 .single();
 
-            if (policyError || !policy) {
+            if (policyError || !policyData) {
                 return new Response(
                     JSON.stringify({
                         error: "정책을 찾을 수 없습니다.",
@@ -90,7 +101,9 @@ Deno.serve(async (req) => {
                 );
             }
 
-            if (!policy.vector) {
+            policy = policyData;
+
+            if (!policyData.vector) {
                 return new Response(
                     JSON.stringify({
                         error: "해당 정책의 벡터가 생성되지 않았습니다. 먼저 정책 벡터를 생성해주세요.",
@@ -103,13 +116,33 @@ Deno.serve(async (req) => {
                 );
             }
 
-            // 2. 벡터 유사도 검색 (PostgreSQL에서 cosine similarity 사용)
-            const vectorStr = `[${policy.vector.join(",")}]`;
+            // 2. 유사도 임계값에 해당하는 전체 개수 조회
+            const { data: totalCountData, error: countError } = await supabaseClient.rpc("count_similar_notices", {
+                query_embedding: policyData.vector,
+                similarity_threshold: 0.83, // 83% 이상 유사도
+            });
 
-            // 유사도 검색 쿼리 (cosine similarity 사용)
+            if (countError) {
+                console.error("벡터 개수 조회 오류:", countError);
+                return new Response(
+                    JSON.stringify({
+                        error: "벡터 개수 조회 중 오류가 발생했습니다.",
+                        details: countError.message,
+                    }),
+                    {
+                        headers: { ...corsHeaders, "Content-Type": "application/json" },
+                        status: 500,
+                    }
+                );
+            }
+
+            totalCount = totalCountData || 0;
+
+            // 3. 벡터 유사도 검색 (PostgreSQL pgvector 사용)
+            // pgvector 타입이므로 벡터를 그대로 전달
             const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
-                query_embedding: vectorStr,
-                similarity_threshold: 0.3, // 30% 이상 유사도
+                query_embedding: policyData.vector,
+                similarity_threshold: 0.83, // 83% 이상 유사도
                 match_count: limit,
                 offset_count: offset,
             });
@@ -130,9 +163,6 @@ Deno.serve(async (req) => {
 
             notices = similarNotices || [];
 
-            // 유사도 검색의 경우 정확한 총 개수를 얻기 어려우므로 근사값 사용
-            totalCount = notices.length < limit ? offset + notices.length : offset + limit + 1;
-
             console.log(`${notices.length}개의 유사한 공고를 찾았습니다`);
         } else {
             // 정책 ID가 없는 경우: 일반 페이지네이션 검색
@@ -149,14 +179,13 @@ Deno.serve(async (req) => {
 
             totalCount = count || 0;
 
-            // 공고 데이터 조회
+            // 공고 데이터 조회 (프론트엔드 NoticeListItem에서 사용하는 필드만 선택)
             const { data: noticesData, error: noticesError } = await supabaseClient
                 .from("notices")
                 .select(
                     `
-                    id, title, category, source, original_url, 
-                    start_date, end_date, content_summary, 
-                    policy_number, created_at
+                    id, title, category, description, original_url, 
+                    start_date, end_date, supervising_institution
                 `
                 )
                 .order("created_at", { ascending: false })
@@ -175,21 +204,23 @@ Deno.serve(async (req) => {
         const hasNext = page < totalPages;
         const hasPrev = page > 1;
 
-        // 응답 데이터 구성
+        // 응답 데이터 구성 (카멜 케이스로 변환)
         const response = {
-            data: notices,
+            data: notices.map(transformNoticeToResponse),
             pagination: {
                 page,
                 limit,
                 totalCount,
                 totalPages,
             },
-            ...(policyId && {
-                policyInfo: {
-                    id: parseInt(policyId),
-                    searchType: "vector_similarity",
-                },
-            }),
+            ...(policyId &&
+                policy && {
+                    policyInfo: {
+                        id: parseInt(policyId),
+                        title: policy.title,
+                        searchType: "vector_similarity",
+                    },
+                }),
         };
 
         return new Response(JSON.stringify(response), {
