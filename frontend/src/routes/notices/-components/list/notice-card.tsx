@@ -9,6 +9,7 @@ import type { Prettify } from '~/types/prettify'
 import type { NoticesResponse } from '~/queries/notices/notices.type'
 import { NOTICE_CATEGORY_OPTIONS } from '../../-constants/notice-category-options'
 import { Dot } from '~/components/ui/dot'
+import { Link } from '@tanstack/react-router'
 
 export function NoticeCard({ notice }: { notice: Prettify<NoticesResponse['data'][number]> }) {
   const categoryMeta =
@@ -56,12 +57,18 @@ export function NoticeCard({ notice }: { notice: Prettify<NoticesResponse['data'
             </Text>
           </Flex>
         )}
-
-        <Button size="sm">
-          <Text fontSize="sm" fontWeight="semibold">
-            자세히 보기
-          </Text>
-        </Button>
+        <Link
+          to="/notices/$id"
+          params={{
+            id: String(notice.id),
+          }}
+        >
+          <Button size="sm">
+            <Text fontSize="sm" fontWeight="semibold">
+              자세히 보기
+            </Text>
+          </Button>
+        </Link>
       </Flex>
     </Card>
   )
