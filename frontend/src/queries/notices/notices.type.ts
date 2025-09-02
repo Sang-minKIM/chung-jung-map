@@ -22,6 +22,7 @@ export type Notice = {
   operatingInstitution: string | null
   registeringInstitution: string | null
   supervisingInstitution: string | null
+  regionalInstitution: string | null
   applicationMethod: string | null
   screeningMethod: string | null
   requiredDocuments: string | null
@@ -30,7 +31,15 @@ export type Notice = {
 
 type NoticeListItem = Pick<
   Notice,
-  'id' | 'title' | 'category' | 'description' | 'url' | 'startDate' | 'endDate' | 'supervisingInstitution'
+  | 'id'
+  | 'title'
+  | 'category'
+  | 'description'
+  | 'url'
+  | 'startDate'
+  | 'endDate'
+  | 'supervisingInstitution'
+  | 'regionalInstitution'
 > & {
   similarity?: number
 }

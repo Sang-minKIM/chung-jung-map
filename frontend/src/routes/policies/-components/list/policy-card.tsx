@@ -8,7 +8,7 @@ import { Building2 } from 'lucide-react'
 import type { PoliciesResponse } from '~/queries/policies/policies.type'
 import { POLICY_CATEGORY_OPTIONS } from '../../-constants/policy-category-options'
 import type { Prettify } from '~/types/prettify'
-import { Link } from '~/components/ui/link'
+import { Link } from '@tanstack/react-router'
 
 export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data'][number]> }) {
   const categoryMeta =
