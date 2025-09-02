@@ -25,9 +25,6 @@ dist-ssr
 # Supabase
 .supabase
 
-# TanStack Router
-frontend/src/routeTree.gen.ts
-
 # MCP
 .mcp.json
 
