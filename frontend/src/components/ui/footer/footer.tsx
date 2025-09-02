@@ -36,7 +36,7 @@ export function Footer() {
           <Flex align="center" gap="sm">
             <Mail size="16" color="#888888" />
             <Text fontSize="sm" color="grey500">
-              contact@cheongjung.kr
+              kimpran@naver.com
             </Text>
           </Flex>
 
@@ -44,7 +44,7 @@ export function Footer() {
 
           <Flex direction="column" align="center" justify="between" gap="md" py="lg" css={bottomSectionStyles}>
             <Text fontSize="sm" color="grey500">
-              © 2024 청정맵. All rights reserved.
+              © 2025 청정맵. All rights reserved.
             </Text>
             <Text fontSize="sm" color="grey500">
               청년을 위한, 청년에 의한 정보 서비스
