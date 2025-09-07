@@ -12,7 +12,7 @@ import { theme } from './styles/theme'
 
 const queryClient = new QueryClient()
 
-const router = createRouter({ routeTree, context: { queryClient } })
+const router = createRouter({ routeTree, context: { queryClient }, defaultPendingMs: 100, defaultPendingMinMs: 300 })
 
 declare module '@tanstack/react-router' {
   interface Register {
