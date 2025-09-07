@@ -8,14 +8,15 @@ import { getNoticesQueryOptions } from '~/queries/notices/notices.query'
 import { NoticeCard } from './notice-card'
 import { Pagination } from '~/components/ui/pagination'
 import { useNavigate } from '@tanstack/react-router'
+import { NoticeResultsEmpty } from './notice-results-empty'
 
 export function NoticeResultsSection() {
   const search = Route.useSearch()
-  const navigate = useNavigate({ from: Route.fullPath })
   const {
     data: { data: notices, policyInfo, pagination },
   } = useSuspenseQuery(getNoticesQueryOptions(search))
 
+  const navigate = useNavigate({ from: Route.fullPath })
   const onPageChange = (page: number) => {
     navigate({
       search: (prev) => ({
@@ -25,13 +26,18 @@ export function NoticeResultsSection() {
     })
   }
 
+  const isEmpty = notices.length === 0
+  if (isEmpty) {
+    return <NoticeResultsEmpty />
+  }
+
   return (
     <Box as="section" py="xl">
       <Text>{policyInfo?.title ? `${policyInfo.title} 관련` : '전체'} 공고 </Text>
       <Text as="span" color="grey500">
         ({pagination.totalCount}개)
       </Text>
-      <Grid as="ul" templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap="lg" mt="lg">
+      <Grid as="ul" templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap="lg" my="lg">
         {notices.map((notice) => (
           <NoticeCard key={notice.id} notice={notice} />
         ))}
