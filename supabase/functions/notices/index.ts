@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -315,9 +315,9 @@ async function handleNoticeList(url: URL) {
                 }
             );
         }
-
+        console.log("totalCountData", totalCountData);
         totalCount = totalCountData || 0;
-
+        console.log("limit, offset", limit, offset);
         // 3. 벡터 유사도 검색 (PostgreSQL pgvector 사용)
         // pgvector 타입이므로 벡터를 그대로 전달
         const { data: similarNotices, error: searchError } = await supabaseClient.rpc("search_similar_notices", {
@@ -326,6 +326,7 @@ async function handleNoticeList(url: URL) {
             match_count: limit,
             offset_count: offset,
         });
+        console.log("similarNotices", similarNotices);
 
         if (searchError) {
             console.error("벡터 검색 오류:", searchError);
