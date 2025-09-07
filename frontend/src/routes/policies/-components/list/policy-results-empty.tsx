@@ -5,7 +5,7 @@ import { Route } from '../..'
 import { Text } from '~/components/typo/text'
 import { Card } from '~/components/ui/card'
 
-export function EmptyResult() {
+export function PolicyResultsEmpty() {
   const search = Route.useSearch()
   return (
     <Box as="section" py="xl">

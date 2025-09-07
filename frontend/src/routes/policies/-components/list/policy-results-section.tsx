@@ -7,7 +7,7 @@ import { Grid } from '~/components/layout/grid'
 import { PolicyCard } from './policy-card'
 
 import { filter, pipe, toArray, isUndefined, unless, some, map } from '@fxts/core'
-import { EmptyResult } from './empty-result'
+import { PolicyResultsEmpty } from './policy-results-empty'
 
 export function PolicyResultsSection() {
   const search = Route.useSearch()
@@ -37,7 +37,7 @@ export function PolicyResultsSection() {
 
   const isEmpty = policies.length === 0
   if (isEmpty) {
-    return <EmptyResult />
+    return <PolicyResultsEmpty />
   }
 
   return (
