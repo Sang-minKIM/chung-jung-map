@@ -3,7 +3,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Flex } from '~/components/layout/flex'
 import { Heading } from '~/components/typo/heading'
 import { getNoticeDetailQueryOptions } from '~/queries/notices/notices.query'
-import { queryClient } from '~/queries/query-client'
 import { NOTICE_CATEGORY_OPTIONS } from '../-constants/notice-category-options'
 import { Text } from '~/components/typo/text'
 import { Tag } from '~/components/ui/tag'
@@ -18,8 +17,8 @@ import { Separated } from '~/components/kits/separated'
 
 export const Route = createFileRoute('/notices/$id/')({
   component: () => <NoticeDetail />,
-  loader: ({ params: { id } }) => {
-    return queryClient.ensureQueryData(getNoticeDetailQueryOptions(id))
+  loader: ({ params: { id }, context }) => {
+    return context.queryClient.ensureQueryData(getNoticeDetailQueryOptions(id))
   },
 })
 
