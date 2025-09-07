@@ -8,6 +8,7 @@ type CardVariant = 'basic' | 'surface' | 'accent'
 export interface CardProps extends FlexItemProps, GridItemProps, BoxProps {
   as?: React.ElementType
   variant?: CardVariant
+  radius?: keyof Theme['radius']
   className?: string
   children?: React.ReactNode
 }
@@ -37,24 +38,24 @@ export interface CardProps extends FlexItemProps, GridItemProps, BoxProps {
  * </Card>
  * ```
  */
-export function Card({ as = 'div', variant = 'basic', className, ...rest }: CardProps) {
-  return <Box as={as} css={(theme: Theme) => variantStyles[variant](theme)} className={className} {...rest} />
+export function Card({ as = 'div', variant = 'basic', radius = 'md', className, ...rest }: CardProps) {
+  return <Box as={as} css={(theme: Theme) => variantStyles[variant](theme, radius)} className={className} {...rest} />
 }
 
 const variantStyles = {
-  basic: (theme: Theme) => css`
+  basic: (theme: Theme, radius: keyof Theme['radius']) => css`
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.grey200};
-    border-radius: ${theme.radius.md};
+    border-radius: ${theme.radius[radius]};
   `,
-  surface: (theme: Theme) => css`
+  surface: (theme: Theme, radius: keyof Theme['radius']) => css`
     background-color: ${theme.colors.grey100};
     border: 1px solid ${theme.colors.grey100};
-    border-radius: ${theme.radius.md};
+    border-radius: ${theme.radius[radius]};
   `,
-  accent: (theme: Theme) => css`
+  accent: (theme: Theme, radius: keyof Theme['radius']) => css`
     background-color: ${theme.colors.white};
     border: 2px solid ${theme.colors.green};
-    border-radius: ${theme.radius.md};
+    border-radius: ${theme.radius[radius]};
   `,
 }
