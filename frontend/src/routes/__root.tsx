@@ -5,20 +5,21 @@ import { Footer } from '~/components/ui/footer'
 import { Box } from '~/components/layout/box'
 import { Container } from '~/components/layout/container'
 import type { QueryClient } from '@tanstack/react-query'
+import { Flex } from '~/components/layout/flex'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
   component: () => (
-    <>
+    <Flex direction="column" minHeight="100dvh" justify="between">
       <Header />
-      <Box as="main" width="100%" py="lg">
+      <Box as="main" width="100%" flexGrow="1" py="lg">
         <Container>
           <Outlet />
         </Container>
       </Box>
       <Footer />
       <TanStackRouterDevtools />
-    </>
+    </Flex>
   ),
 })
