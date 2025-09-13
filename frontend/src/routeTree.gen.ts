@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PoliciesIndexRouteImport } from './routes/policies/index'
 import { Route as NoticesIndexRouteImport } from './routes/notices/index'
+import { Route as PoliciesIdIndexRouteImport } from './routes/policies/$id/index'
 import { Route as NoticesIdIndexRouteImport } from './routes/notices/$id/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const NoticesIndexRoute = NoticesIndexRouteImport.update({
   path: '/notices/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliciesIdIndexRoute = PoliciesIdIndexRouteImport.update({
+  id: '/policies/$id/',
+  path: '/policies/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NoticesIdIndexRoute = NoticesIdIndexRouteImport.update({
   id: '/notices/$id/',
   path: '/notices/$id/',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/notices': typeof NoticesIndexRoute
   '/policies': typeof PoliciesIndexRoute
   '/notices/$id': typeof NoticesIdIndexRoute
+  '/policies/$id': typeof PoliciesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/notices': typeof NoticesIndexRoute
   '/policies': typeof PoliciesIndexRoute
   '/notices/$id': typeof NoticesIdIndexRoute
+  '/policies/$id': typeof PoliciesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/notices/': typeof NoticesIndexRoute
   '/policies/': typeof PoliciesIndexRoute
   '/notices/$id/': typeof NoticesIdIndexRoute
+  '/policies/$id/': typeof PoliciesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/notices' | '/policies' | '/notices/$id'
+  fullPaths: '/' | '/notices' | '/policies' | '/notices/$id' | '/policies/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/notices' | '/policies' | '/notices/$id'
-  id: '__root__' | '/' | '/notices/' | '/policies/' | '/notices/$id/'
+  to: '/' | '/notices' | '/policies' | '/notices/$id' | '/policies/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/notices/'
+    | '/policies/'
+    | '/notices/$id/'
+    | '/policies/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +82,7 @@ export interface RootRouteChildren {
   NoticesIndexRoute: typeof NoticesIndexRoute
   PoliciesIndexRoute: typeof PoliciesIndexRoute
   NoticesIdIndexRoute: typeof NoticesIdIndexRoute
+  PoliciesIdIndexRoute: typeof PoliciesIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/policies/$id/': {
+      id: '/policies/$id/'
+      path: '/policies/$id'
+      fullPath: '/policies/$id'
+      preLoaderRoute: typeof PoliciesIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/notices/$id/': {
       id: '/notices/$id/'
       path: '/notices/$id'
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   NoticesIndexRoute: NoticesIndexRoute,
   PoliciesIndexRoute: PoliciesIndexRoute,
   NoticesIdIndexRoute: NoticesIdIndexRoute,
+  PoliciesIdIndexRoute: PoliciesIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
