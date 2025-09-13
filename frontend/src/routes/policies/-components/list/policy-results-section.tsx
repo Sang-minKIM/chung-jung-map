@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Text } from '~/components/typo/text'
-import { getPoliciesQueryOptions } from '~/queries/policies/policies.query'
+import { getPoliciesQueryOptions } from '~/routes/policies/-queries/policies.query'
 import { Route } from '../..'
 import { Box } from '~/components/layout/box'
 import { Grid } from '~/components/layout/grid'

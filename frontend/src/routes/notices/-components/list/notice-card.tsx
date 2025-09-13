@@ -1,15 +1,15 @@
+import { Building2, Calendar } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { css } from '@emotion/react'
 import { Text } from '~/components/typo/text'
 import { Card } from '~/components/ui/card'
 import { Flex } from '~/components/layout/flex'
-import { css } from '@emotion/react'
 import { Button } from '~/components/ui/button'
-import { Building2, Calendar } from 'lucide-react'
+import { Dot } from '~/components/ui/dot'
 
 import type { Prettify } from '~/types/prettify'
-import type { NoticesResponse } from '~/queries/notices/notices.type'
+import type { NoticesResponse } from '../../-queries/notices.type'
 import { NOTICE_CATEGORY_OPTIONS } from '../../-constants/notice-category-options'
-import { Dot } from '~/components/ui/dot'
-import { Link } from '@tanstack/react-router'
 
 export function NoticeCard({ notice }: { notice: Prettify<NoticesResponse['data'][number]> }) {
   const categoryMeta =

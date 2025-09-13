@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query'
 import { NOTICES_ENDPOINT, NOTICES_KEY } from './notices.model'
-import { request } from '../request'
 import type { NoticesResponse, NoticesSearchParams, Notice } from './notices.type'
+import { request } from '~/utils/request'
 import type { Prettify } from '~/types/prettify'
 
 export const getNoticesQueryOptions = (params?: NoticesSearchParams) =>
