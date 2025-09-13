@@ -1,4 +1,4 @@
-type Policy = {
+export type Policy = {
   id: number
   title: string
   category: '금융' | '주거' | '일자리' | '교육' | '생활복지문화' | '참여'
