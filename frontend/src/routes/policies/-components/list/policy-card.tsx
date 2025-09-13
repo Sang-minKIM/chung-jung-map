@@ -41,7 +41,7 @@ export function PolicyCard({ policy }: { policy: Prettify<PoliciesResponse['data
         </Text>
 
         <Flex gap="sm">
-          <Link to="/policies/$id" params={{ id: String(policy.id) }}>
+          <Link to="/policies/$id" params={{ id: policy.id }}>
             <Button variant="outline" size="sm">
               <Text fontSize="sm" fontWeight="semibold" p="xs">
                 자세히 보기
