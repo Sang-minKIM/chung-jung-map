@@ -9,7 +9,7 @@ export const getPoliciesQueryOptions = () =>
     queryFn: () => request(POLICIES_ENDPOINT.list()),
   })
 
-export const getPolicyDetailQueryOptions = (id: string) =>
+export const getPolicyDetailQueryOptions = (id: number) =>
   queryOptions<Policy>({
     queryKey: POLICIES_KEY.detail(id),
     queryFn: () => request(POLICIES_ENDPOINT.detail(id)),
