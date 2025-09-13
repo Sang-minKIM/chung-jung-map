@@ -40,7 +40,7 @@ function transformPolicyDetailToResponse(policy: PolicyDetailRow) {
         id: policy.id,
         title: policy.title,
         category: policy.category,
-        subcategory: policy.sub_category,
+        subCategory: policy.sub_category,
         targetGroup: policy.target_group,
         description: policy.description,
     };
@@ -180,9 +180,7 @@ async function handlePolicyDetail(url: URL, pathSegments: string[]) {
     console.log(`정책 상세 조회 성공 - ID: ${policyId}, 제목: ${policyData.title}`);
 
     // 응답 데이터 구성 (상세용 변환 함수 사용)
-    const response = {
-        data: transformPolicyDetailToResponse(policyData),
-    };
+    const response = transformPolicyDetailToResponse(policyData);
 
     return new Response(JSON.stringify(response), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
