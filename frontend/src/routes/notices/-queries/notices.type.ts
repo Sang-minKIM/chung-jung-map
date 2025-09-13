@@ -1,5 +1,5 @@
 import z from 'zod'
-import type { PaginationResponse } from '../types'
+import type { PaginationResponse } from '~/types/pagination'
 
 export const NoticesSearchSchema = z.object({
   page: z.number().min(1).optional().default(1),

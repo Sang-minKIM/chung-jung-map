@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getPoliciesQueryOptions } from '~/queries/policies/policies.query'
+import { getPoliciesQueryOptions } from './-queries/policies.query'
 import { PoliciesSearchSchema } from './-types/search'
 import { PolicySearchSection } from './-components/search/policy-search-section'
 import { PolicyResultsSection, PolicyResultsSkeleton } from './-components/list'

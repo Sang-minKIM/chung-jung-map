@@ -11,9 +11,9 @@ import { Card } from '~/components/ui/card'
 import { Dot } from '~/components/ui/dot'
 import { Link } from '~/components/ui/link'
 import { Tag } from '~/components/ui/tag'
-import { getNoticesQueryOptions } from '~/queries/notices/notices.query'
-import { getPolicyDetailQueryOptions } from '~/queries/policies/policies.query'
-import { NoticeCard } from '~/routes/notices/-components/list/notice-card'
+import { getPolicyDetailQueryOptions } from '../-queries/policies.query'
+import { getNoticesQueryOptions } from '~/routes/notices/-exports/queries'
+import { NoticeCard } from '~/routes/notices/-exports/components'
 
 export const Route = createFileRoute('/policies/$id/')({
   component: () => <PolicyDetail />,

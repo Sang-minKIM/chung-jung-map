@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { NoticesSearchSchema } from '~/queries/notices/notices.type'
+import { NoticesSearchSchema } from '~/routes/notices/-queries/notices.type'
 import { NoticeResultsSection, NoticeResultsSkeleton } from './-components/list'
 import { Suspense } from 'react'
-import { getNoticesQueryOptions } from '~/queries/notices/notices.query'
+import { getNoticesQueryOptions } from '~/routes/notices/-queries/notices.query'
 
 export const Route = createFileRoute('/notices/')({
   validateSearch: NoticesSearchSchema,
