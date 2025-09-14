@@ -16,7 +16,7 @@ export function Label({ children, Icon, gap = 'sm', flex = '1', color = 'grey500
 
   return (
     <Flex as="dt" gap={gap} flex={flex} align="center" color={color} {...rest}>
-      {Icon && <Icon size={theme.componentSizes.md.iconSize} color="inherit" />}
+      {Icon && <Icon size={theme.componentSizes.md.iconSize} />}
       <Text>{children}</Text>
     </Flex>
   )
