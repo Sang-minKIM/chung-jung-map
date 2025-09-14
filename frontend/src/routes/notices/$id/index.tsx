@@ -9,7 +9,6 @@ import { Building2, Calendar, ExternalLink } from 'lucide-react'
 import { Link } from '~/components/ui/link'
 import { Separator } from '~/components/ui/separator'
 import { Separated } from '~/components/kits/separated'
-import type { Notice } from '../-queries/notices.type'
 import { InfoCard } from '~/components/ui/info-card'
 import { DataList } from '~/components/ui/data-list'
 
@@ -26,9 +25,23 @@ function NoticeDetail() {
     data: { data: notice },
   } = useSuspenseQuery(getNoticeDetailQueryOptions(id))
 
+  const categoryOption =
+    NOTICE_CATEGORY_OPTIONS.find((option) => option.value === notice.category) ??
+    NOTICE_CATEGORY_OPTIONS.find((option) => option.value === '기타')!
+
   return (
     <Flex as="main" direction="column" gap="xl">
-      <NoticeTags category={notice.category} regionalInstitution={notice.regionalInstitution} />
+      <Flex as="ul" gap="md">
+        <Tag as="li" color={categoryOption.color} size="sm">
+          {categoryOption.label}
+        </Tag>
+        {notice.regionalInstitution && (
+          <Tag color="blue" size="sm">
+            {notice.regionalInstitution}
+          </Tag>
+        )}
+      </Flex>
+
       <InfoCard.Root>
         <InfoCard.Heading as="h1" size="lg">
           {notice.title}
@@ -149,32 +162,6 @@ function NoticeDetail() {
             <Text as="pre">{notice.requiredDocuments}</Text>
           </InfoCard.Content>
         </InfoCard.Root>
-      )}
-    </Flex>
-  )
-}
-
-function NoticeTags({
-  category,
-  regionalInstitution,
-}: {
-  category: Notice['category']
-  regionalInstitution: Notice['regionalInstitution']
-}) {
-  const categoryOption =
-    NOTICE_CATEGORY_OPTIONS.find((option) => option.value === category) ??
-    NOTICE_CATEGORY_OPTIONS.find((option) => option.value === '기타')!
-
-  return (
-    <Flex as="ul" gap="md">
-      <Tag as="li" color={categoryOption.color} size="sm">
-        {categoryOption.label}
-      </Tag>
-
-      {regionalInstitution && (
-        <Tag color="blue" size="sm">
-          {regionalInstitution}
-        </Tag>
       )}
     </Flex>
   )
