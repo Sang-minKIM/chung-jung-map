@@ -3,11 +3,9 @@ import React from 'react'
 import { type GridItemProps, type FlexItemProps } from '~/styles/style-props'
 import { Box, type BoxProps } from '~/components/layout/box'
 
-type CardVariant = 'basic' | 'surface' | 'accent'
-
 export interface CardProps extends FlexItemProps, GridItemProps, BoxProps {
   as?: React.ElementType
-  variant?: CardVariant
+  variant?: 'basic' | 'surface' | 'accent'
   radius?: keyof Theme['radius']
   className?: string
   children?: React.ReactNode

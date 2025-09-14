@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 
 export interface TextProps extends BoxProps {
   children?: ReactNode
-  as?: 'p' | 'span' | 'pre'
+  as?: 'p' | 'span' | 'pre' | 'dd' | 'dt'
 }
 
 export function Text({ as = 'span', fontSize = 'md', color = 'inherit', m = 'none', children, ...rest }: TextProps) {
