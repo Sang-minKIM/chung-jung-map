@@ -2,17 +2,28 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Flex } from '~/components/layout/flex'
 import { Heading } from '~/components/typo/heading'
 import { Text } from '~/components/typo/text'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import { css } from '@emotion/react'
 
 export const Route = createFileRoute('/')({
   component: () => (
     <>
-      <Flex direction="column" align="center" justify="center" gap="lg" height="100dvh">
+      <Flex direction="column" align="center" justify="center" gap="sm" height="100dvh">
         <Heading as="h1" fontSize="2xl" fontWeight="bold">
           청년 정책,
         </Heading>
         <Heading as="h1" fontSize="2xl" fontWeight="bold">
           이제 놓치지 마세요
         </Heading>
+        <DotLottieReact
+          src="/lottie/location.lottie"
+          loop
+          autoplay
+          css={css`
+            height: 50%;
+            aspect-ratio: 4/3;
+          `}
+        />
       </Flex>
       <Flex align="center" justify="center" gap="lg" height="100dvh">
         <Flex direction="column" align="center" justify="center" gap="lg">
