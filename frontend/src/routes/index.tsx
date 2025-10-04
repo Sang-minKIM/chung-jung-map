@@ -9,15 +9,35 @@ import { Button } from '~/components/ui/button'
 import { Dot } from '~/components/ui/dot'
 import type { ComponentProps } from 'react'
 import { Building2 } from 'lucide-react'
+import { Grid } from '~/components/layout/grid'
+import { SlideInAnimation } from '~/styles/animations/slide-in'
+
+const introAnimation = new SlideInAnimation({
+  duration: 1,
+  gap: 0.5,
+  direction: 'down',
+})
+
+const policyAnimation = new SlideInAnimation({
+  duration: 0.6,
+  gap: 0.2,
+  direction: 'down',
+})
+
+const noticeAnimation = new SlideInAnimation({
+  duration: 0.6,
+  gap: 0.2,
+  direction: 'down',
+})
 
 export const Route = createFileRoute('/')({
   component: () => (
     <>
       <Flex direction="column" align="center" justify="center" gap="sm" height="100dvh">
-        <Heading as="h1" fontSize="2xl" fontWeight="bold">
+        <Heading as="h1" fontSize="2xl" fontWeight="bold" css={introAnimation.at(0)}>
           청년 정책,
         </Heading>
-        <Heading as="h1" fontSize="2xl" fontWeight="bold">
+        <Heading as="h1" fontSize="2xl" fontWeight="bold" css={introAnimation.at(1)}>
           이제 놓치지 마세요
         </Heading>
         <DotLottieReact
@@ -25,64 +45,69 @@ export const Route = createFileRoute('/')({
           loop
           autoplay
           css={css`
-            width: 70%;
+            height: 50%;
             aspect-ratio: 4/3;
           `}
         />
       </Flex>
-      <Flex direction="column" align="center" justify="center" gap="xl" height="100dvh">
+      <Flex direction="column" align="center" justify="center" gap="xl" minHeight="100dvh" height="max-content">
         <Flex direction="column" align="center" justify="center" gap="lg">
-          <Heading as="h2" fontSize="xl" fontWeight="bold">
+          <Heading as="h2" fontSize="xl" fontWeight="bold" css={policyAnimation.at(0)}>
             정책 탐색
           </Heading>
-          <Text as="p" fontSize="lg">
+          <Text as="p" fontSize="lg" css={policyAnimation.at(1)}>
             어려운 청년 정책, 60개의 정책 개요를 통해 쉽게 탐색해보세요.
           </Text>
         </Flex>
-        <Flex gap="lg">
+        <Grid as="ul" width="100%" templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap="lg">
           <PolicyCard
             dotColor="green"
             category="일자리"
             title="국민취업지원제도"
             description="맞춤형 취업지원서비스(1:1 심층상담 일경험/직업훈련 연계 컨설팅 등); 구직촉진수당(월 50만원 + 부양가족 1인당 10만원 × 6개월); 취업성공수당 최대 150만원; 취업활동비용 최대"
+            css={policyAnimation.at(2)}
           />
           <PolicyCard
             dotColor="orange"
             category="주거"
             title="버팀목대출(청년)"
             description="2.2~3.3% 금리로 최장 10년간 전세자금 대출"
+            css={policyAnimation.at(3)}
           />
           <PolicyCard
             dotColor="yellow"
             category="금융"
             title="청년도약계좌"
             description="월 1천원~70만원 자유 납입; 정부기여금 3~6% + 이자소득 비과세; 5년 만기"
+            css={policyAnimation.at(4)}
           />
-        </Flex>
+        </Grid>
       </Flex>
-      <Flex direction="column" align="center" justify="center" gap="xl" height="100dvh">
+      <Flex direction="column" align="center" justify="center" gap="xl" minHeight="100dvh" height="max-content">
         <Flex direction="column" align="center" justify="center" gap="lg">
-          <Heading as="h2" fontSize="xl" fontWeight="bold">
+          <Heading as="h2" fontSize="xl" fontWeight="bold" css={noticeAnimation.at(0)}>
             공고 탐색
           </Heading>
-          <Text as="p" fontSize="lg">
+          <Text as="p" fontSize="lg" css={noticeAnimation.at(1)}>
             정책과 관련된 공고를 청정맵 만의 유사도 측정 기술을 통해 추천해드려요.
           </Text>
         </Flex>
-        <Flex gap="lg">
+        <Grid as="ul" width="100%" templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap="lg">
           <NoticeCard
             dotColor="green"
             category="취업"
             title="국민취업지원제도"
             description="청년실업자 등에게 원하는 일자리를 찾을 수 있도록 취업지원서비스와 소득지원을 함께 제공하여 노동시장 진입촉진과 경제적 자립기반 마련"
             supervisingInstitution="고용노동부"
+            css={noticeAnimation.at(2)}
           />
           <NoticeCard
             dotColor="orange"
             category="주거"
-            title="청년층 임대주택 공급 확대 (통합공공임대주택)"
+            title="청년층 임대주택 공급 확대"
             description="저소득 서민, 청년, 신혼부부, 장애인, 국가유공자 등 주거취약계층을 통합한 통합공공임대주택 공급으로 주거안정 및 주거환경 개선 도모"
             supervisingInstitution="주택정책과"
+            css={noticeAnimation.at(3)}
           />
           <NoticeCard
             dotColor="yellow"
@@ -90,8 +115,9 @@ export const Route = createFileRoute('/')({
             title="청년 자산형성 지원(청년도약계좌)"
             description="만기 5년 동안 매월 70만원 한도 내에서 자유롭게 납입 가능한 정부지원형 적금상품으로 청년의 중장기 자산형성을 지원합니다."
             supervisingInstitution="금융위원회"
+            css={noticeAnimation.at(4)}
           />
-        </Flex>
+        </Grid>
       </Flex>
     </>
   ),
@@ -104,18 +130,9 @@ interface PolicyCardProps {
   description: string
 }
 
-const PolicyCard = ({ dotColor, category, title, description }: PolicyCardProps) => {
+const PolicyCard = ({ dotColor, category, title, description, ...rest }: PolicyCardProps) => {
   return (
-    <Card
-      variant="surface"
-      as="li"
-      p="xl"
-      height="280px"
-      css={css`
-        aspect-ratio: 4/3;
-        word-break: keep-all;
-      `}
-    >
+    <Card variant="surface" as="li" p="xl" minHeight="280px" {...rest}>
       <Flex direction="column" justify="between" height="100%">
         <Flex direction="column" gap="xl">
           <Flex align="center" gap="sm">
@@ -132,6 +149,7 @@ const PolicyCard = ({ dotColor, category, title, description }: PolicyCardProps)
             color="grey600"
             css={css`
               line-height: 1.6;
+              word-break: keep-all;
             `}
           >
             {description}
@@ -163,17 +181,9 @@ interface NoticeCardProps {
   supervisingInstitution: string
 }
 
-const NoticeCard = ({ dotColor, category, title, description, supervisingInstitution }: NoticeCardProps) => {
+const NoticeCard = ({ dotColor, category, title, description, supervisingInstitution, ...rest }: NoticeCardProps) => {
   return (
-    <Card
-      variant="basic"
-      as="li"
-      p="xl"
-      height="280px"
-      css={css`
-        aspect-ratio: 4/3;
-      `}
-    >
+    <Card as="li" variant="basic" p="xl" minHeight="280px" {...rest}>
       <Flex direction="column" justify="between" height="100%">
         <Flex align="center" gap="sm">
           <Dot color={dotColor} size="md" />
