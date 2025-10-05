@@ -34,7 +34,16 @@ const noticeAnimation = new ScrollSlideInAnimation({
 export const Route = createFileRoute('/')({
   component: () => (
     <>
-      <Flex direction="column" align="center" justify="center" gap="sm" height="100dvh">
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap="sm"
+        height="100dvh"
+        css={css`
+          position: relative;
+        `}
+      >
         <Heading as="h1" fontSize="2xl" fontWeight="bold" css={introAnimation.at(0)}>
           청년 정책,
         </Heading>
@@ -50,13 +59,33 @@ export const Route = createFileRoute('/')({
             aspect-ratio: 4/3;
           `}
         />
+        <DotLottieReact
+          src="/lottie/arrow-down.lottie"
+          loop
+          autoplay
+          css={css`
+            height: 10%;
+            /* position: absolute; */
+            bottom: 10%;
+            margin: 0 auto;
+          `}
+        />
       </Flex>
-      <Flex direction="column" align="center" justify="center" gap="xl" minHeight="100dvh" height="max-content">
+
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap="3xl"
+        minHeight="100dvh"
+        height="max-content"
+        py="3xl"
+      >
         <Flex direction="column" align="center" justify="center" gap="lg">
           <Heading as="h2" fontSize="xl" fontWeight="bold" css={policyAnimation.apply()}>
             정책 탐색
           </Heading>
-          <Text as="p" fontSize="lg" css={policyAnimation.apply()}>
+          <Text as="p" fontSize="lg" css={[policyAnimation.apply(), descriptionTextStyle]}>
             어려운 청년 정책, 60개의 정책 개요를 통해 쉽게 탐색해보세요.
           </Text>
         </Flex>
@@ -84,12 +113,21 @@ export const Route = createFileRoute('/')({
           />
         </Grid>
       </Flex>
-      <Flex direction="column" align="center" justify="center" gap="xl" minHeight="100dvh" height="max-content">
+
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        gap="3xl"
+        minHeight="100dvh"
+        height="max-content"
+        py="3xl"
+      >
         <Flex direction="column" align="center" justify="center" gap="lg">
           <Heading as="h2" fontSize="xl" fontWeight="bold" css={noticeAnimation.apply()}>
             공고 탐색
           </Heading>
-          <Text as="p" fontSize="lg" css={noticeAnimation.apply()}>
+          <Text as="p" fontSize="lg" css={[noticeAnimation.apply(), descriptionTextStyle]}>
             정책과 관련된 공고를 청정맵 만의 유사도 측정 기술을 통해 추천해드려요.
           </Text>
         </Flex>
@@ -222,3 +260,8 @@ const NoticeCard = ({ dotColor, category, title, description, supervisingInstitu
     </Card>
   )
 }
+
+const descriptionTextStyle = css`
+  line-height: 1.2;
+  word-break: keep-all;
+`
