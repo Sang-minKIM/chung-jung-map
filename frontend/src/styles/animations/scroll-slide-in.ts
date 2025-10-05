@@ -12,7 +12,7 @@ export class ScrollSlideInAnimation {
   private static readonly slideInUp = keyframes`
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(50dvh);
     }
     to {
       opacity: 1;
@@ -23,7 +23,7 @@ export class ScrollSlideInAnimation {
   private static readonly slideInDown = keyframes`
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-50dvh);
     }
     to {
       opacity: 1;
@@ -34,7 +34,7 @@ export class ScrollSlideInAnimation {
   private static readonly slideInLeft = keyframes`
     from {
       opacity: 0;
-      transform: translateX(20px);
+      transform: translateX(50dvw);
     }
     to {
       opacity: 1;
@@ -45,7 +45,7 @@ export class ScrollSlideInAnimation {
   private static readonly slideInRight = keyframes`
     from {
       opacity: 0;
-      transform: translateX(-20px);
+      transform: translateX(-50dvw);
     }
     to {
       opacity: 1;
