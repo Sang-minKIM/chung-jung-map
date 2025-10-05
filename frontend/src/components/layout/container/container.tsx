@@ -15,11 +15,11 @@ const containerStyles = (theme: Theme) => css`
   margin: 0 auto;
   padding: 0 ${theme.space.lg};
 
-  @media (min-width: 640px) {
+  @media (min-width: ${theme.breakpoints.sm}) {
     padding: 0 ${theme.space.xl};
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${theme.breakpoints.lg}) {
     padding: 0 ${theme.space['2xl']};
   }
 `

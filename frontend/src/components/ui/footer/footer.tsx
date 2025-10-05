@@ -73,8 +73,8 @@ const footerStyles = (theme: Theme) => css`
   background-color: ${theme.colors.grey100};
 `
 
-const bottomSectionStyles = css`
-  @media (min-width: 768px) {
+const bottomSectionStyles = (theme: Theme) => css`
+  @media (min-width: ${theme.breakpoints.md}) {
     flex-direction: row;
     align-items: center;
   }
