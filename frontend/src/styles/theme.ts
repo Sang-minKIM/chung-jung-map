@@ -84,6 +84,12 @@ export const theme = {
     lg: '12px',
     full: '50%',
   },
+
+  breakpoints: {
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+  },
 }
 
 export type MyTheme = typeof theme

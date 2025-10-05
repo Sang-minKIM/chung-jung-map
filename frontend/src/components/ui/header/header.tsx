@@ -86,7 +86,7 @@ const DesktopNav = styled.nav`
   align-items: center;
   gap: 24px;
 
-  @media (min-width: 768px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     display: flex;
   }
 `
@@ -95,7 +95,7 @@ const MobileNav = styled.nav<{ isOpen: boolean }>`
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
   background-color: white;
   padding: 16px 0;
-  @media (min-width: 768px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `
