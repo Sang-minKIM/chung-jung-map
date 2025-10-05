@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Flex } from '~/components/layout/flex'
 import { Heading } from '~/components/typo/heading'
 import { Text } from '~/components/typo/text'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
-import { css } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import { Card } from '~/components/ui/card'
 import { Button } from '~/components/ui/button'
 import { Dot } from '~/components/ui/dot'
@@ -169,9 +169,11 @@ export const Route = createFileRoute('/')({
           <Heading as="h2" fontSize="xl" fontWeight="bold" css={outroAnimation.apply()}>
             지금 바로 찾아보세요
           </Heading>
-          <Button size="lg" css={outroAnimation.apply()}>
-            시작하기
-          </Button>
+          <Link to="/policies">
+            <Button size="lg" css={[outroAnimation.apply(), hoverButtonStyle]}>
+              시작하기
+            </Button>
+          </Link>
         </Flex>
       </Flex>
     </>
@@ -280,4 +282,37 @@ const NoticeCard = ({ dotColor, category, title, description, supervisingInstitu
 const descriptionTextStyle = css`
   line-height: 1.2;
   word-break: keep-all;
+`
+
+const shakeBottomAnimation = keyframes`
+  0%,
+  100% {
+    transform: rotate(0deg);
+    transform-origin: 50% 100%;
+  }
+  10% {
+    transform: rotate(2deg);
+  }
+  20%,
+  40%,
+  60% {
+    transform: rotate(-4deg);
+  }
+  30%,
+  50%,
+  70% {
+    transform: rotate(4deg);
+  }
+  80% {
+    transform: rotate(-2deg);
+  }
+  90% {
+    transform: rotate(2deg);
+  }
+`
+
+const hoverButtonStyle = css`
+  &:hover {
+    animation: ${shakeBottomAnimation} 1s ease-in-out 2 both;
+  }
 `
