@@ -31,19 +31,16 @@ const noticeAnimation = new ScrollSlideInAnimation({
   timeline: 'view()',
 })
 
+const outroAnimation = new ScrollSlideInAnimation({
+  direction: 'up',
+  defaultRange: 'contain 0% contain 20%',
+  timeline: 'view()',
+})
+
 export const Route = createFileRoute('/')({
   component: () => (
     <>
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        gap="sm"
-        height="100dvh"
-        css={css`
-          position: relative;
-        `}
-      >
+      <Flex direction="column" align="center" justify="center" gap="sm" height="100dvh">
         <Heading as="h1" fontSize="2xl" fontWeight="bold" css={introAnimation.at(0)}>
           청년 정책,
         </Heading>
@@ -65,9 +62,6 @@ export const Route = createFileRoute('/')({
           autoplay
           css={css`
             height: 10%;
-            /* position: absolute; */
-            bottom: 10%;
-            margin: 0 auto;
           `}
         />
       </Flex>
@@ -157,6 +151,28 @@ export const Route = createFileRoute('/')({
             css={noticeAnimation.apply('entry 30% contain 30%')}
           />
         </Grid>
+      </Flex>
+
+      <Flex direction="column" align="center" gap="sm" height="100dvh">
+        <DotLottieReact
+          src="/lottie/search.lottie"
+          loop
+          autoplay
+          css={css`
+            height: 50%;
+          `}
+        />
+        <Flex direction="column" align="center" justify="center" gap="xl">
+          <Heading as="h2" fontSize="xl" fontWeight="bold" css={outroAnimation.apply()}>
+            나에게 꼭 맞는 정책,
+          </Heading>
+          <Heading as="h2" fontSize="xl" fontWeight="bold" css={outroAnimation.apply()}>
+            지금 바로 찾아보세요
+          </Heading>
+          <Button size="lg" css={outroAnimation.apply()}>
+            시작하기
+          </Button>
+        </Flex>
       </Flex>
     </>
   ),
